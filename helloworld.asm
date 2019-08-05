@@ -1,5 +1,5 @@
 section .data
-		msg:	db "Hello World"
+		msg:	db "Hello World",0xa
 		msg_L:	equ $-msg
 
 section .text
