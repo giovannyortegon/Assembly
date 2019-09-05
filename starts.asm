@@ -12,6 +12,7 @@ _start:					;tell linker entry point
 		mov ebx,1			;file descriptor (stdout)
 		mov ecx,s2			;message to wirte
 		mov edx,9			;message length 9
+		int 0x80
 
 		mov eax,1			;system call number (sys_exit)
 		int 0x80				;call kernel
