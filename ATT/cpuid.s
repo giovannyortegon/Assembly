@@ -7,7 +7,7 @@ output:
 _start:
 #.globl main
 #main:
-	nop	
+	nop
 	movl $0, %eax
 	cpuid 
 	movl $output, %edi
