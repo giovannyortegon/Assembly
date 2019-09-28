@@ -1,0 +1,2 @@
+# AS EXERCISES 
+Syntax ATT 
