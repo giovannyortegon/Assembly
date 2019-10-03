@@ -1,4 +1,7 @@
 as -mx86-used-note=yes -o cpuid.o cpuid.s
+as -32 -o cpuid.o cpuid.s
 ld -o cpuid cpuid.o
 # GCC
 gcc -m32 -o cpuid cpuid.s
+# Linker dynamic library
+ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o cpuid2 -lc cpuid2.o

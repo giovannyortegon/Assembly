@@ -8,10 +8,10 @@ output:
 	.lcomm buffer, 12
 
 .section .text
-.global main
-main:
-#.globl _start
-#_start:
+#.global main
+#main:
+.globl _start
+_start:
 	movl $0, %eax
 	cpuid
 	movl $buffer, %edi
