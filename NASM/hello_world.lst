@@ -1,0 +1,19 @@
+     1                                  section .data	; declaraing and difine data
+     2 00000000 48656C6C6F20576F72-     msg	db	"Hello World" , 0xa	; string to print
+     2 00000009 6C640A             
+     3                                  len	equ	$ - msg		; length of the string
+     4                                  
+     5                                  section .text
+     6                                  	global _start	; Determine the way to linker ld
+     7                                  
+     8                                  _start:			; entry point
+     9 00000000 90                      	nop
+    10 00000001 66BA0C000000            	mov edx, len	; message length
+    11 00000007 66B9[00000000]          	mov ecx, msg	; message to write
+    12 0000000D 66BB01000000            	mov ebx, 1	; file description (stdout)
+    13 00000013 66B804000000            	mov eax, 4	; system call number (sys_write)
+    14 00000019 CD80                    	int 0x80	; Call kernel
+    15                                  
+    16 0000001B 66B801000000            	mov eax, 1	; System call (exit)
+    17 00000021 CD80                    	int 0x80	; Call Kernel 
+    18                                  	
