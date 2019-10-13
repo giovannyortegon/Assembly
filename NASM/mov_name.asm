@@ -5,6 +5,7 @@ name		db		'Zara Ali', 0xa
 section .text
 	global _start
 _start:
+	nop
 	; write (print) name variable 'Zara Ali'
 	mov eax, 4		; system call (sys_write)
 	mov ebx, 1		; file descriptor
