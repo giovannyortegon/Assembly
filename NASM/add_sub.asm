@@ -20,7 +20,7 @@ segment .data
 segment .bss
 	num1 resb 2
 	num2 resb 2
-	res	resb 1
+	res	resd 8
 
 segment .text
 	global _start
