@@ -12,6 +12,7 @@ section .text
 	global _start
 
 _start:
+	nop
 	mov ecx, [num1]
 	cmp ecx, [num2]
 	jg	check_third_num
