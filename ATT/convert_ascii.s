@@ -1,32 +1,29 @@
 # convert_ascii.s - Converted this input data in ASCII
+# constant of '0' in ascii
+.equ ascii, 48
 .section .data
-	msg:
-		.ascii "The sum is: \n",
-
 	num:
-		.int 1
+		.int 5
+
+.section .bss
+		.lcomm number, 8
 
 .section .text
 	.globl _start
 _start:
-	movl $4, %eax
-	movl $3, num
+	nop
+# convert number to string
+	movl num, %eax
+	addl $ascii, %eax
 
-	xadd %eax, num
-	
-
-	movl $4, %eax
-	movl $1, %ebx
-	movl $msg, %ecx
-	movl $12, %edx
-	int $0x80
-
+	movl %eax, number
+# print number
 	movl $4, %eax
 	movl $1, %ebx
-	movl num, %ecx
-	movl $1, %edx
+	movl $number, %ecx
+	movl $8, %edx
 	int $0x80
-
+# exit program
 	movl $1, %eax
 	movl $0, %ebx
 	int $0x80
