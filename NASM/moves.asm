@@ -15,26 +15,26 @@ _start:
 	movzx	edx, bl			; EDX=0000009bh
 	movzx	cx, bl			; CX = 009Bh
 ; MOVSX
-;	mov bx, 0A69Bh
-;	movsx eax, bx
-;	movsx edx, bl
-;	mov bl, 7Bh
-;	movsx cx, bl
+	mov bx, 0A69Bh
+	movsx eax, bx
+	movsx edx, bl
+	mov bl, 7Bh
+	movsx cx, bl
 ; Intercambio de memoria a memoria
-;	mov ax, val1
-;	xchg ax, val2
-;	mov val1, ax
+	mov ax, [val1]
+	xchg ax, [val2]
+	mov [val1], ax
 ; Direccionamento con desplazamients de directo (palabras)
-;	mov al, arregloB
-;	mov al, [arregloB+1]
-;	mov al, [arregloB+2]
+	mov al, [arregloB]
+	mov al, [arregloB+1]
+	mov al, [arregloB+2]
 ; Direccionamiento directo con desplazamiento directo (dobles palabras)
-;	mov ax, arregloW
-;	mov ax, [arregloW+2]
+	mov ax, [arregloW]
+	mov ax, [arregloW+2]
 ; Direcionamiento directo con desplazamiento directo (dobles palabras)
-;	mov eax, arregloD
-;	mov eax, [arregloD+4]
-;	mov eax, [arregloD+4]
+	mov eax, [arregloD]
+	mov eax, [arregloD+4]
+	mov eax, [arregloD+4]
 
 	mov eax, 1
 	int 0x80
