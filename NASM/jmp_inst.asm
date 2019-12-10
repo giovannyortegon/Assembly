@@ -1,5 +1,5 @@
 section .data
-	arr db 1, 2, 3, 4
+	arr db "Hola"
 section .text
 	global _start
 _start:
@@ -8,7 +8,6 @@ _start:
 	mov ebx, 0
 arreglo:
 	mov al, [esi + ebx]
-	add esi, 1
 	inc ebx
 	cmp ebx, 4
 	jge exit
