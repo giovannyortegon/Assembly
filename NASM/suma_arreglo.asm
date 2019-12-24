@@ -1,6 +1,6 @@
 ; suma_arrgelo.asm
 section .data
-	arr db 1, 2, 3, 4, 5
+	arr dd 10000h, 20000h, 30000h, 40000h, 50000h
 section .text
 	global _start
 _start:
@@ -19,7 +19,8 @@ sumArr:
 	mov eax, 0
 L1:
 	add eax, [esi]
-	inc esi
+;	inc esi
+	add esi, 4
 	loop L1
 
 	pop ecx
