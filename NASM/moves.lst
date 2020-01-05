@@ -1,0 +1,40 @@
+     1                                  section .data
+     2 00000000 0010                    	val1 dw 1000h
+     3 00000002 0020                    	val2 dw 2000h
+     4 00000004 1020304050              	arregloB db	10h, 20h, 30h, 40h, 50h
+     5 00000009 000100020003            	arregloW dw 100h, 200h, 300h
+     6 0000000F 0000010000000200        	arregloD dd	10000h, 20000h
+     7                                  
+     8                                  section .text
+     9                                  	global _start
+    10                                  _start:
+    11 00000000 90                      	nop
+    12                                  ; MOVZX
+    13 00000001 66BB9BA6                	mov		bx, 0A69Bh
+    14 00000005 0FB7C3                  	movzx	eax, bx			; EAX=0000A69Bh
+    15 00000008 0FB6D3                  	movzx	edx, bl			; EDX=0000009bh
+    16 0000000B 660FB6CB                	movzx	cx, bl			; CX = 009Bh
+    17                                  ; MOVSX
+    18                                  ;	mov bx, 0A69Bh
+    19                                  ;	movsx eax, bx
+    20                                  ;	movsx edx, bl
+    21                                  ;	mov bl, 7Bh
+    22                                  ;	movsx cx, bl
+    23                                  ; Intercambio de memoria a memoria
+    24                                  ;	mov ax, val1
+    25                                  ;	xchg ax, val2
+    26                                  ;	mov val1, ax
+    27                                  ; Direccionamento con desplazamients de directo (palabras)
+    28                                  ;	mov al, arregloB
+    29                                  ;	mov al, [arregloB+1]
+    30                                  ;	mov al, [arregloB+2]
+    31                                  ; Direccionamiento directo con desplazamiento directo (dobles palabras)
+    32                                  ;	mov ax, arregloW
+    33                                  ;	mov ax, [arregloW+2]
+    34                                  ; Direcionamiento directo con desplazamiento directo (dobles palabras)
+    35                                  ;	mov eax, arregloD
+    36                                  ;	mov eax, [arregloD+4]
+    37                                  ;	mov eax, [arregloD+4]
+    38                                  
+    39 0000000F B801000000              	mov eax, 1
+    40 00000014 CD80                    	int 0x80

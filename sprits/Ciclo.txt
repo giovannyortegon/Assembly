@@ -1,0 +1,5 @@
+Ciclo:
+21 10 C0 36 FF 2D F2 03 40 18 FE
+
+Ciclo Anidado:
+21 00 C0 3E FF 06 10 77 23 05 20 FB 3D FA 05 40 18 FE

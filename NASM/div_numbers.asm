@@ -64,8 +64,8 @@ _start:
 	sub ebx, '0'		; convert to decimal
 
 ; add eax and ebx
-	add eax, ebx		; adding num1 and num2
-	add eax, '0'		; convert to ASCII again
+	div ebx		; adding num1 and num2
+	add ax, '0'		; convert to ASCII again
 ; mov for eax value to res, it is addign num1 and num2	
 	mov [res], eax
 ; prent res
