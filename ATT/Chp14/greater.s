@@ -1,5 +1,6 @@
 # greater.s - An example of using multiple input values
 .section .text
+.type areafunc, @function
 	.globl greater
 greater:
 	pushl %ebp
