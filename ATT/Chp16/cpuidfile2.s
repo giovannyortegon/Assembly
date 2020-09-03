@@ -1,7 +1,7 @@
 #cpuidfile - An example of writing data to a file
 .section .data
 filename:
-	.asciz "cpuid.txt"
+	.asciz "note.txt"
 output:
 	.asciz "The processor Vendor ID is 'xxxxxxxxxxxx'\n"
 .section .bss
