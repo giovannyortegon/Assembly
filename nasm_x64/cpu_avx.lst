@@ -1,0 +1,95 @@
+     1                                  extern printf
+     2                                  
+     3                                  section .data
+     4 00000000 546869732063707520-     	fmt_noavx db "This cpu does not support AVX.",10,0
+     4 00000009 646F6573206E6F7420-
+     4 00000012 737570706F72742041-
+     4 0000001B 56582E0A00         
+     5 00000020 546869732063707520-     	fmt_avx db "This cpu supports AVX.",10,0
+     5 00000029 737570706F72747320-
+     5 00000032 4156582E0A00       
+     6 00000038 546869732063707520-     	fmt_noavx2 db "This cpu does not support AVX2.",10,0
+     6 00000041 646F6573206E6F7420-
+     6 0000004A 737570706F72742041-
+     6 00000053 5658322E0A00       
+     7 00000059 546869732063707520-     	fmt_avx2 db "This cpu supports AVX2.",10,0
+     7 00000062 737570706F72747320-
+     7 0000006B 415658322E0A00     
+     8 00000072 546869732063707520-     	fmt_noavx512 db "This cpu does not support AVX-512.",10,0
+     8 0000007B 646F6573206E6F7420-
+     8 00000084 737570706F72742041-
+     8 0000008D 56582D3531322E0A00 
+     9 00000096 546869732063707520-     	fmt_avx512 db "This cpu supports AVX512.",10,0
+     9 0000009F 737570706F72747320-
+     9 000000A8 4156583531322E0A00 
+    10                                  section .bss
+    11                                  section .text
+    12                                  	global main
+    13                                  main:
+    14 00000000 55                      	push rbp
+    15 00000001 4889E5                  	mov rbp,rsp
+    16 00000004 E802000000              	call cpu_sse	; returns 1 in rax if AVX supported, otherwise 0
+    17 00000009 C9                      	leave
+    18 0000000A C3                      	ret
+    19                                  
+    20                                  cpu_sse:
+    21                                  ;test for avx
+    22 0000000B 55                      	push rbp
+    23 0000000C 4889E5                  	mov rbp,rsp
+    24 0000000F B801000000              	mov eax,1			; request CPU feature flags
+    25 00000014 0FA2                    	cpuid
+    26 00000016 B81C000000              	mov eax,28			; test bit 28 in ecx
+    27 0000001B 0FA3C1                  	bt ecx,eax
+    28 0000001E 7368                    	jnc no_avx
+    29 00000020 4831C0                  	xor rax,rax
+    30 00000023 48BF-                   	mov rdi,fmt_avx
+    30 00000025 [2000000000000000] 
+    31 0000002D E8(00000000)            	call printf
+    32                                  ;test for avx2
+    33 00000032 B807000000              	mov eax,7
+    34 00000037 B900000000              	mov ecx,0
+    35 0000003C 0FA2                    	cpuid
+    36 0000003E B805000000              	mov eax,5			; test bit 5 in ebx
+    37 00000043 0FA3C3                  	bt ebx,eax
+    38 00000046 0F8381000000            	jnc the_exit
+    39 0000004C 4831C0                  	xor rax,rax
+    40 0000004F 48BF-                   	mov rdi,fmt_avx2
+    40 00000051 [5900000000000000] 
+    41 00000059 E8(00000000)            	call printf
+    42                                  ;test for avx512 foundation
+    43 0000005E B807000000              	mov eax,7			; request CPU feature flags
+    44 00000063 B900000000              	mov ecx,0
+    45 00000068 0FA2                    	cpuid
+    46 0000006A B810000000              	mov eax,16
+    47 0000006F 0FA3C3                  	bt ebx,eax
+    48 00000072 7342                    	jnc no_avx512
+    49 00000074 4831C0                  	xor rax,rax
+    50 00000077 48BF-                   	mov rdi,fmt_avx512
+    50 00000079 [9600000000000000] 
+    51 00000081 E8(00000000)            	call printf
+    52 00000086 EB45                    	jmp the_exit
+    53                                  ; test bit 16 in ebx
+    54                                  no_avx:
+    55 00000088 48BF-                   	mov rdi,fmt_noavx
+    55 0000008A [0000000000000000] 
+    56 00000092 4831C0                  	xor rax,rax
+    57 00000095 E8(00000000)            	call printf			; displays message if AVX not available
+    58 0000009A 4831C0                  	xor rax,rax			; returns 0, no AVX
+    59 0000009D EB2E                    	jmp the_exit		; and exits
+    60                                  no_avx2:
+    61 0000009F 48BF-                   	mov rdi,fmt_noavx2
+    61 000000A1 [3800000000000000] 
+    62 000000A9 4831C0                  	xor rax,rax
+    63 000000AC E8(00000000)            	call printf			; displays message if AVX not available
+    64 000000B1 4831C0                  	xor rax,rax			; returns 0, no AVX
+    65 000000B4 EB17                    	jmp the_exit		; and exits
+    66                                  no_avx512:
+    67 000000B6 48BF-                   	mov rdi,fmt_noavx512
+    67 000000B8 [7200000000000000] 
+    68 000000C0 4831C0                  	xor rax,rax
+    69 000000C3 E8(00000000)            	call printf			; displays message if AVX not available
+    70 000000C8 4831C0                  	xor rax,rax			; returns 0, no AVX
+    71 000000CB EB00                    	jmp the_exit		; and exits
+    72                                  the_exit:
+    73 000000CD C9                      leave
+    74 000000CE C3                      ret
