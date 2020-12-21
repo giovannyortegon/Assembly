@@ -1,0 +1,20 @@
+     1                                  section .data
+     2 00000000 AF00000000000000            a dq 175
+     3 00000008 0110000000000000            b dq 4097
+     4 00000010 0000000000000000            sum dq 0
+     5 00000018 0000000000000000            diff dq 0
+     6                                  section .text
+     7                                      global main
+     8                                  main:
+     9 00000000 55                          push rbp
+    10 00000001 4889E5                      mov rbp, rsp
+    11 00000004 488B0425[00000000]          mov rax, [a]    ; mov a (175) into rax
+    12 0000000C 4889C3                      mov rbx, rax    ; mov rax to rbx
+    13 0000000F 48030425[08000000]          add rax, [b]    ; add b to rax
+    14 00000017 48890425[10000000]          mov [sum], rax  ; save the sum
+    15 0000001F 482B1C25[08000000]          sub rbx, [b]    ; subtact b from rax
+    16 00000027 48891C25[18000000]          mov [diff], rbx
+    17 0000002F 4831C0                      xor rax, rax
+    18 00000032 4889EC                      mov rsp, rbp
+    19 00000035 5D                          pop rbp
+    20 00000036 C3                          ret
