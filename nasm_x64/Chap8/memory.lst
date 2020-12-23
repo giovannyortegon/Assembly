@@ -1,0 +1,42 @@
+     1                                  ; memory.asm
+     2                                  section .data
+     3 00000000 7B                      	bNum db 123
+     4 00000001 3930                    	wNum dw 12345
+     5 00000003 0000<rep 5h>            	wArray times 5 dw 0		; array of 5 word
+     6                                  ; containing 0
+     7 0000000D 39300000                	dNum dd 12345
+     8 00000011 3930000000000000        	qNum1 dq 12345
+     9 00000019 61626300                	text1 db "abc", 0
+    10 0000001D 50D1B924CC210940        	qNum2 dq 3.141502654
+    11 00000025 63646500                	text2 db "cde", 0
+    12                                  section .bss
+    13 00000000 ??                      	bvar resb 1
+    14 00000001 ????????                	dvar resd 1
+    15 00000005 <res 14h>               	wvar resw 10
+    16 00000019 <res 18h>               	qvar resq 3
+    17                                  section .text
+    18                                  	global main
+    19                                  main:
+    20 00000000 55                      	push rbp
+    21 00000001 4889E5                  	mov rbp, rsp
+    22 00000004 488D0425[00000000]      	lea rax, [bNum]			; load address of bNum in rax
+    23 0000000C 48B8-                   	mov rax, bNum			; load address of bNum in rax
+    23 0000000E [0000000000000000] 
+    24 00000016 488B0425[00000000]      	mov rax, [bNum]			; load value at bNum in rax
+    25 0000001E 48890425[00000000]      	mov [bvar], rax			; load from rax at address bvar
+    26                                  	
+    27 00000026 488D0425[00000000]      	lea rax, [bvar]			; load address of bvar in rax+
+    28 0000002E 488D0425[01000000]      	lea rax, [wNum]			; load address of wNum in rax
+    29 00000036 488B0425[01000000]      	mov rax, [wNum]			; load content of wNum in rax
+    30 0000003E 488D0425[19000000]      	lea rax, [text1]		; load address of text1 in rax
+    31 00000046 48B8-                   	mov rax, text1			; load address of text1 in rax
+    31 00000048 [1900000000000000] 
+    32 00000050 48B8-                   	mov rax, text1 + 1		; load address second character in rax
+    32 00000052 [1A00000000000000] 
+    33 0000005A 488D0425[1A000000]      	lea rax, [text1 + 1]		; load second character in rax
+    34 00000062 488B0425[19000000]      	mov rax, [text1]		; load starting at text1 in rax
+    35 0000006A 488B0425[1A000000]      	mov rax, [text1 + 1]	; load starting at text1 + 1 in  rax
+    36                                  
+    37 00000072 4889EC                  	mov rsp, rbp
+    38 00000075 5D                      	pop rbp
+    39 00000076 C3                      	ret
