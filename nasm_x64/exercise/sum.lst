@@ -1,0 +1,43 @@
+     1                                  section .data
+     2 00000000 6C612073756D612065-     	fm_print db "la suma es: %ld", 10, 0
+     2 00000009 733A20256C640A00   
+     3 00000011 20256C6420256C6400      	fm_scan db " %ld %ld", 0
+     4                                  section .bss
+     5 00000000 ????????????????        	result resq 1
+     6 00000008 ????????????????        	num1 resq 1
+     7 00000010 ????????????????        	num2 resq 1
+     8                                  section .text
+     9                                  	extern printf
+    10                                  	extern scanf
+    11                                  	global _start
+    12                                  _start:
+    13                                  ; stack backup
+    14                                  	;mov rbp
+    15                                  	;mov rbp, rsp
+    16                                  ; using scanf like C
+    17 00000000 48BF-                   	mov rdi, fm_scan
+    17 00000002 [1100000000000000] 
+    18 0000000A 48BE-                   	mov rsi, num2
+    18 0000000C [1000000000000000] 
+    19 00000014 48BA-                   	mov rdx, num1
+    19 00000016 [0800000000000000] 
+    20 0000001E E8(00000000)            	call scanf
+    21                                  ; doing operation
+    22 00000023 488B1C25[08000000]      	mov rbx, [num1]
+    23 0000002B 488B0C25[10000000]      	mov rcx, [num2]
+    24 00000033 4801CB                  	add rbx, rcx
+    25                                  
+    26 00000036 4831FF                  	xor rdi, rdi
+    27 00000039 48BF-                   	mov rdi, fm_print
+    27 0000003B [0000000000000000] 
+    28 00000043 4889DE                  	mov rsi, rbx
+    29 00000046 B800000000              	mov rax, 0
+    30 0000004B E8(00000000)            	call printf 
+    31                                  ; stack recover
+    32                                  ;	mov rsp, rbp
+    33                                  ;	pop rbp
+    34                                  ; exit syscall
+    35 00000050 4831C0                  	xor rax, rax
+    36 00000053 B83C000000              	mov rax, 60
+    37 00000058 BF00000000              	mov rdi, 0
+    38 0000005D 0F05                    	syscall
