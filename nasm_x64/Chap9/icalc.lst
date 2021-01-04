@@ -1,0 +1,179 @@
+     1                                  ; icalc.asm
+     2                                  extern printf
+     3                                  section .data
+     4 00000000 8000000000000000        	number1 dq 128	; the number to be used to
+     5 00000008 1300000000000000        	number2 dq 19	; show the arithmetic
+     6 00000010 F4FFFFFFFFFFFFFF        	neg_num dq -12	; to show sign extension
+     7 00000018 546865206E756D6265-     	fmt		db "The numbers are %ld and %ld", 10, 0
+     7 00000021 72732061726520256C-
+     7 0000002A 6420616E6420256C64-
+     7 00000033 0A00               
+     8 00000035 257320256C640A00        	fmt_int db "%s %ld", 10, 0
+     9 0000003D 5468652073756D2069-     	sumi	db "The sum is", 0
+     9 00000046 7300               
+    10 00000048 546865206469666665-     	difi	db "The difference is", 0
+    10 00000051 72656E636520697300 
+    11 0000005A 4E756D626572203120-     	inci	db "Number 1 incremented:", 0
+    11 00000063 696E6372656D656E74-
+    11 0000006C 65643A00           
+    12 00000070 4E756D626572203120-     	deci	db "Number 1 decremented:", 0
+    12 00000079 64656372656D656E74-
+    12 00000082 65643A00           
+    13 00000086 4E756D626572203120-     	sali	db "Number 1 Shift left 2 (x4):", 0
+    13 0000008F 5368696674206C6566-
+    13 00000098 74203220287834293A-
+    13 000000A1 00                 
+    14 000000A2 4E756D626572203120-     	sari	db "Number 1 Shift right 2 (/4):", 0
+    14 000000AB 536869667420726967-
+    14 000000B4 6874203220282F3429-
+    14 000000BD 3A00               
+    15 000000BF 4E756D626572203120-     	sariex	db "Number 1 Shift right 2 (/4) with "
+    15 000000C8 536869667420726967-
+    15 000000D1 6874203220282F3429-
+    15 000000DA 207769746820       
+    16 000000E0 7369676E2065787465-     			db "sign extension:", 0
+    16 000000E9 6E73696F6E3A00     
+    17 000000F0 5468652070726F6475-     	multi	db "The product is", 0
+    17 000000F9 637420697300       
+    18 000000FF 54686520696E746567-     	divi	db "The integer quotient is", 0
+    18 00000108 65722071756F746965-
+    18 00000111 6E7420697300       
+    19 00000117 546865206D6F64756C-     	remi	db "The modulo is", 0
+    19 00000120 6F20697300         
+    20                                  section .bss
+    21 00000000 ????????????????        	resulti	resq 1
+    22 00000008 ????????????????        	modulo	resq 1
+    23                                  section .text
+    24                                  	global main
+    25                                  main:
+    26 00000000 55                      	push rbp
+    27 00000001 4889E5                  	mov rbp, rsp
+    28                                  ; displaying the numbers
+    29 00000004 48BF-                   	mov rdi, fmt
+    29 00000006 [1800000000000000] 
+    30 0000000E 488B3425[00000000]      	mov rsi, [number1]
+    31 00000016 488B1425[08000000]      	mov rdx, [number2]
+    32 0000001E 4831C0                  	xor rax, rax
+    33 00000021 E8(00000000)            	call printf
+    34                                  ; adding
+    35 00000026 488B0425[00000000]      	mov rax, [number1]
+    36 0000002E 48030425[08000000]      	add rax, [number2]		; add number2 to rax
+    37 00000036 48890425[00000000]      	mov [resulti], rax		; move sum to result
+    38                                  ; display the result
+    39 0000003E 48BF-                   	mov rdi, fmt_int
+    39 00000040 [3500000000000000] 
+    40 00000048 48BE-                   	mov rsi, sumi
+    40 0000004A [3D00000000000000] 
+    41 00000052 488B1425[00000000]      	mov rdx, [resulti]
+    42 0000005A B800000000              	mov rax, 0
+    43 0000005F E8(00000000)            	call printf
+    44                                  ; substracting
+    45 00000064 488B0425[00000000]      	mov rax, [number1]
+    46 0000006C 482B0425[08000000]      	sub rax, [number2]		; subtract number2 from rax
+    47 00000074 48890425[00000000]      	mov [resulti], rax
+    48                                  ; displaying the result
+    49 0000007C 48BF-                   	mov rdi, fmt_int
+    49 0000007E [3500000000000000] 
+    50 00000086 48BE-                   	mov rsi, difi
+    50 00000088 [4800000000000000] 
+    51 00000090 488B1425[00000000]      	mov rdx, [resulti]
+    52 00000098 B800000000              	mov rax, 0
+    53 0000009D E8(00000000)            	call printf
+    54                                  ; incrementing
+    55 000000A2 488B0425[00000000]      	mov rax, [number1]
+    56 000000AA 48FFC0                  	inc rax					; increment rax with 1
+    57 000000AD 48890425[00000000]      	mov [resulti], rax
+    58                                  ; displaying the result
+    59 000000B5 48BF-                   	mov rdi, fmt_int
+    59 000000B7 [3500000000000000] 
+    60 000000BF 48BE-                   	mov rsi, inci
+    60 000000C1 [5A00000000000000] 
+    61 000000C9 488B1425[00000000]      	mov rdx, [resulti]
+    62 000000D1 B800000000              	mov rax, 0
+    63 000000D6 E8(00000000)            	call printf
+    64                                  ; decrementing
+    65 000000DB 488B0425[00000000]      	mov rax, [number1]
+    66 000000E3 48FFC8                  	dec rax					; decrement rax with 1
+    67 000000E6 48890425[00000000]      	mov [resulti], rax
+    68                                  ;displaying the result
+    69 000000EE 48BF-                   	mov rdi, fmt_int
+    69 000000F0 [3500000000000000] 
+    70 000000F8 48BE-                   	mov rsi, deci
+    70 000000FA [7000000000000000] 
+    71 00000102 488B1425[00000000]      	mov rdx, [resulti]
+    72 0000010A 4831C0                  	xor rax, rax
+    73 0000010D E8(00000000)            	call printf
+    74                                  ; shift arithmetic left
+    75 00000112 488B0425[00000000]      	mov rax, [number1]
+    76 0000011A 48C1E002                	sal rax, 2				; multiply rax by 4
+    77 0000011E 48890425[00000000]      	mov [resulti], rax
+    78                                  ; displaying the result
+    79 00000126 48BF-                   	mov rdi, fmt_int
+    79 00000128 [3500000000000000] 
+    80 00000130 48BE-                   	mov rsi, sali
+    80 00000132 [8600000000000000] 
+    81 0000013A 488B1425[00000000]      	mov rdx, [resulti]
+    82 00000142 4831C0                  	xor rax, rax
+    83 00000145 E8(00000000)            	call printf
+    84                                  ; shift arithmetic right
+    85 0000014A 488B0425[00000000]      	mov rax, [number1]
+    86 00000152 48C1F802                	sar rax, 2				; divide rax by 4
+    87 00000156 48890425[00000000]      	mov [resulti], rax
+    88                                  ; displaying the result
+    89 0000015E 48BF-                   	mov rdi, fmt_int
+    89 00000160 [3500000000000000] 
+    90 00000168 48BE-                   	mov rsi, sari
+    90 0000016A [A200000000000000] 
+    91 00000172 488B1425[00000000]      	mov rdx, [resulti]
+    92 0000017A B800000000              	mov rax, 0
+    93 0000017F E8(00000000)            	call printf
+    94                                  ; shift arithmetic right with sign extension
+    95 00000184 488B0425[10000000]      	mov rax, [neg_num]
+    96 0000018C 48C1F802                	sar rax, 2				; divide rax by 4
+    97 00000190 48890425[00000000]      	mov [resulti], rax
+    98                                  ; displaying the result
+    99 00000198 48BF-                   	mov rdi, fmt_int
+    99 0000019A [3500000000000000] 
+   100 000001A2 48BE-                   	mov rsi, sariex
+   100 000001A4 [BF00000000000000] 
+   101 000001AC 488B1425[00000000]      	mov rdx, [resulti]
+   102 000001B4 4831C0                  	xor rax, rax
+   103 000001B7 E8(00000000)            	call printf
+   104                                  ; multiply
+   105 000001BC 488B0425[00000000]      	mov rax, [number1]
+   106 000001C4 48F72C25[08000000]      	imul qword [number2]	; multiply  rax with number2
+   107 000001CC 48890425[00000000]      	mov [resulti], rax
+   108                                  ; displaying the result
+   109 000001D4 48BF-                   	mov rdi, fmt_int
+   109 000001D6 [3500000000000000] 
+   110 000001DE 48BE-                   	mov rsi, multi
+   110 000001E0 [F000000000000000] 
+   111 000001E8 488B1425[00000000]      	mov rdx, [resulti]
+   112 000001F0 4831C0                  	xor rax, rax
+   113 000001F3 E8(00000000)            	call printf
+   114                                  ; divide
+   115 000001F8 488B0425[00000000]      	mov rax, [number1]
+   116 00000200 4831D2                  	xor rdx, rdx			; rdx needs to be 0 before idiv
+   117 00000203 48F73C25[08000000]      	idiv qword	[number2]	; divide rax, by number2, modulo in rdx
+   118 0000020B 48890425[00000000]      	mov [resulti], rax
+   119 00000213 48891425[08000000]      	mov [modulo], rdx		; rdx to modulo
+   120                                  ; displaying the result
+   121 0000021B 48BF-                   	mov rdi, fmt_int
+   121 0000021D [3500000000000000] 
+   122 00000225 48BE-                   	mov rsi, divi
+   122 00000227 [FF00000000000000] 
+   123 0000022F 488B1425[00000000]      	mov rdx, [resulti]
+   124 00000237 4831C0                  	xor rax, rax
+   125 0000023A E8(00000000)            	call printf
+   126                                  
+   127 0000023F 48BF-                   	mov rdi, fmt_int
+   127 00000241 [3500000000000000] 
+   128 00000249 48BE-                   	mov rsi, remi
+   128 0000024B [1701000000000000] 
+   129 00000253 488B1425[08000000]      	mov rdx, [modulo]
+   130 0000025B 4831C0                  	xor rax, rax
+   131 0000025E E8(00000000)            	call printf
+   132                                  
+   133 00000263 4889EC                  	mov rsp, rbp
+   134 00000266 5D                      	pop rbp
+   135 00000267 C3                      	ret
