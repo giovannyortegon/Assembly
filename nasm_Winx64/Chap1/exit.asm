@@ -16,4 +16,3 @@ main:
     sub rsp, 32     ; shadow parameters space
     mov ecx, 5      ; parameters for exit function
     call exit
-
