@@ -1,5 +1,5 @@
 as -mx86-used-note=yes -o cpuid.o cpuid.s
-as -32 -o cpuid.o cpuid.s
+as -32 -gstabs -o cpuid.o cpuid.s
 ld -o cpuid cpuid.o
 # GCC
 gcc -m32 -o cpuid cpuid.s
