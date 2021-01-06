@@ -1,0 +1,5 @@
+# add2.asm
+add2.exe: add2.obj
+	gcc -o add2.exe add2.obj
+add2.obj: add2.asm
+	nasm -f win64 -g -F cv8 add2.asm -l add2.lst

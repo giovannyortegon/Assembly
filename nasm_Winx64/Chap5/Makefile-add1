@@ -1,0 +1,5 @@
+# add1.asm 
+add1.exe: add1.obj
+	gcc -g -o add1.exe add1.obj
+add1.obj: add1.asm
+	nasm -f win64 -P ebe.inc add1.asm -l add1.lst
