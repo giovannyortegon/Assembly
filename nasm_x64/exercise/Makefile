@@ -1,6 +1,5 @@
-sum: sum.o
-	ld -o sum sum.o -lc --dynamic-linker /lib64/ld-linux-x86-64.so.2
-sum.o: sum.asm
-	nasm -f elf64 -g -F dwarf sum.asm -l sum.lst
-clean:
-	rm sum
+# two_points.asm
+main: obj.o
+	gcc -o main obj.o -no-pie
+two_points.o: two_points.asm
+	nasm -f elf64 -g -F dwarf two_points.asm
