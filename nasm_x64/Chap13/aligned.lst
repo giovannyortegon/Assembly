@@ -1,0 +1,42 @@
+     1                                  ; aligned.asm
+     2                                  extern printf
+     3                                  
+     4                                  section .data
+     5 00000000 322074696D65732070-     	fmt db "2 times pi equals %.14f", 10, 0
+     5 00000009 6920657175616C7320-
+     5 00000012 252E3134660A00     
+     6 00000019 112D4454FB210940        	pi dq 3.14159265358979
+     7                                  section .bss
+     8                                  section .text
+     9                                  ; ----------------
+    10                                  func3:
+    11 00000000 55                      	push rbp
+    12 00000001 F20F100425-             	movsd xmm0, [pi]
+    12 00000006 [19000000]         
+    13 0000000A F20F580425-             	addsd xmm0, [pi]
+    13 0000000F [19000000]         
+    14 00000013 48BF-                   	mov rdi, fmt
+    14 00000015 [0000000000000000] 
+    15 0000001D B801000000              	mov rax, 1
+    16 00000022 E8(00000000)            	call printf			; print a float
+    17 00000027 5D                      	pop rbp
+    18 00000028 C3                      	ret
+    19                                  ; ----------------
+    20                                  func2:
+    21 00000029 55                      	push rbp
+    22 0000002A E8D1FFFFFF              	call func3			; call the third function
+    23 0000002F 5D                      	pop rbp
+    24 00000030 C3                      	ret
+    25                                  ; ----------------
+    26                                  func1:
+    27 00000031 55                      	push rbp
+    28 00000032 E8F2FFFFFF              	call func2			; call the second function
+    29 00000037 5D                      	pop rbp
+    30 00000038 C3                      	ret
+    31                                  ; ----------------
+    32                                  	global main
+    33                                  main:
+    34 00000039 55                      	push rbp
+    35 0000003A E8F2FFFFFF              	call func1			; call the first function
+    36 0000003F 5D                      	pop rbp
+    37 00000040 C3                      	ret
