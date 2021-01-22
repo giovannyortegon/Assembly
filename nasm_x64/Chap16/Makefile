@@ -1,5 +1,7 @@
-# bits2.asm
-bits2: bits2.o
-	gcc -g -o bits2 bits2.o -no-pie
-bits2.o: bits2.asm
-	nasm -f elf64 -g -F dwarf bits2.asm -l  bits2.lst
+# bits3.asm
+bits3: bits3.o printb.o
+	gcc -o bits3 bits3.o printb.o -no-pie
+bits3.o: bits3.asm
+	nasm -f elf64 -g -F dwarf bits3.asm -l bits3.lst
+printb: printb.c
+	gcc -c printb.c
