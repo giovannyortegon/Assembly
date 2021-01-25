@@ -1,0 +1,5 @@
+# function5.asm
+main: obj.o
+	gcc -o main obj.o -no-pie
+obj.o: function5.asm
+	nasm -f elf64 function5.asm -o obj.o -l function5.lst

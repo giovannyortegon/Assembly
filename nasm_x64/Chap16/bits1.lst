@@ -1,0 +1,183 @@
+     1                                  ; bists1.asm
+     2                                  extern printb
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 4E756D62657220310A-     	msgn1 db "Number 1", 10, 0
+     6 00000009 00                 
+     7 0000000A 4E756D62657220320A-     	msgn2 db "Number 2", 10, 0
+     7 00000013 00                 
+     8 00000014 584F520A00              	msg1 db "XOR", 10, 0
+     9 00000019 4F520A00                	msg2 db "OR", 10, 0	
+    10 0000001D 414E440A00              	msg3 db "AND", 10, 0
+    11 00000022 4E4F54206E756D6265-     	msg4 db "NOT number 1", 10, 0
+    11 0000002B 7220310A00         
+    12 00000030 53484C2032206C6F77-     	msg5 db "SHL 2 lower byte of number 1", 10, 0
+    12 00000039 65722062797465206F-
+    12 00000042 66206E756D62657220-
+    12 0000004B 310A00             
+    13 0000004E 5348522032206C6F77-     	msg6 db "SHR 2 lower byte of number 1", 10, 0
+    13 00000057 65722062797465206F-
+    13 00000060 66206E756D62657220-
+    13 00000069 310A00             
+    14 0000006C 53414C2032206C6F77-     	msg7 db "SAL 2 lower byte of number 1", 10, 0
+    14 00000075 65722062797465206F-
+    14 0000007E 66206E756D62657220-
+    14 00000087 310A00             
+    15 0000008A 5341522032206C6F77-     	msg8 db "SAR 2 lower byte of number 1", 10, 0
+    15 00000093 65722062797465206F-
+    15 0000009C 66206E756D62657220-
+    15 000000A5 310A00             
+    16 000000A8 524F4C2032206C6F77-     	msg9 db "ROL 2 lower byte of number 1", 10, 0
+    16 000000B1 65722062797465206F-
+    16 000000BA 66206E756D62657220-
+    16 000000C3 310A00             
+    17 000000C6 524F4C2032206C6F77-     	msg10 db "ROL 2 lower byte of number 2", 10, 0
+    17 000000CF 65722062797465206F-
+    17 000000D8 66206E756D62657220-
+    17 000000E1 320A00             
+    18 000000E4 524F522032206C6F77-     	msg11 db "ROR 2 lower byte of number 1", 10, 0
+    18 000000ED 65722062797465206F-
+    18 000000F6 66206E756D62657220-
+    18 000000FF 310A00             
+    19 00000102 524F522032206C6F77-     	msg12 db "ROR 2 lower byte of number 2", 10, 0
+    19 0000010B 65722062797465206F-
+    19 00000114 66206E756D62657220-
+    19 0000011D 320A00             
+    20 00000120 B8FFFFFFFFFFFFFF        	number1 dq -72
+    21 00000128 2804000000000000        	number2 dq 1064
+    22                                  section .bss
+    23                                  section .text
+    24                                  	global main
+    25                                  main:
+    26 00000000 55                      	push rbp
+    27 00000001 4889E5                  	mov rbp, rsp
+    28                                  ; Print number 1
+    29 00000004 48BE-                   	mov rsi, msgn1
+    29 00000006 [0000000000000000] 
+    30 0000000E E8D2010000              	call printmsg
+    31 00000013 488B3C25[20010000]      	mov rdi, [number1]
+    32 0000001B E8(00000000)            	call printb
+    33                                  ; print number 2
+    34 00000020 48BE-                   	mov rsi, msgn2
+    34 00000022 [0A00000000000000] 
+    35 0000002A E8B6010000              	call printmsg
+    36 0000002F 488B3C25[28010000]      	mov rdi, [number2]
+    37 00000037 E8(00000000)            	call printb
+    38                                  ; print XOR (exclusive OR)
+    39 0000003C 48BE-                   	mov rsi, msg1
+    39 0000003E [1400000000000000] 
+    40 00000046 E89A010000              	call printmsg
+    41                                  ; xor and printmsg
+    42 0000004B 488B0425[20010000]      	mov rax, [number1]
+    43 00000053 48330425[28010000]      	xor rax, [number2]
+    44 0000005B 4889C7                  	mov rdi, rax
+    45 0000005E E8(00000000)            	call printb
+    46                                  ; print OR ------------
+    47 00000063 48BE-                   	mov rsi, msg2
+    47 00000065 [1900000000000000] 
+    48 0000006D E873010000              	call printmsg
+    49                                  ; or and print
+    50 00000072 488B0425[20010000]      	mov rax, [number1]
+    51 0000007A 480B0425[28010000]      	or rax, [number2]
+    52 00000082 4889C7                  	mov rdi, rax
+    53 00000085 E8(00000000)            	call printb
+    54                                  ; print AND ------------
+    55 0000008A 48BE-                   	mov rsi, msg3
+    55 0000008C [1D00000000000000] 
+    56 00000094 E84C010000              	call printmsg
+    57                                  ; and and print
+    58 00000099 488B0425[20010000]      	mov rax, [number1]
+    59 000000A1 48230425[28010000]      	and rax, [number2]
+    60 000000A9 4889C7                  	mov rdi, rax
+    61 000000AC E8(00000000)            	call printb
+    62                                  ; print NOT ------------
+    63 000000B1 48BE-                   	mov rsi, msg4
+    63 000000B3 [2200000000000000] 
+    64 000000BB E825010000              	call printmsg
+    65                                  ; not and print
+    66 000000C0 488B0425[20010000]      	mov rax, [number1]
+    67 000000C8 48F7D0                  	not rax
+    68 000000CB 4889C7                  	mov rdi, rax
+    69 000000CE E8(00000000)            	call printb
+    70                                  ; print SHL (shift left ------ )
+    71 000000D3 48BE-                   	mov rsi, msg5
+    71 000000D5 [3000000000000000] 
+    72 000000DD E803010000              	call printmsg
+    73                                  ; shl and print
+    74 000000E2 488B0425[20010000]      	mov rax, [number1]
+    75 000000EA C0E002                  	shl al, 2
+    76 000000ED 4889C7                  	mov rdi, rax
+    77 000000F0 E8(00000000)            	call printb
+    78                                  ; print SHR (shift right)
+    79 000000F5 48BE-                   	mov rsi, msg6
+    79 000000F7 [4E00000000000000] 
+    80 000000FF E8E1000000              	call printmsg
+    81                                  ; shr and print
+    82 00000104 488B0425[20010000]      	mov rax, [number1]
+    83 0000010C C0E802                  	shr al, 2
+    84 0000010F 4889C7                  	mov rdi, rax
+    85 00000112 E8(00000000)            	call printb
+    86                                  ; print SAL (shift aritmetic left)
+    87 00000117 48BE-                   	mov rsi, msg7
+    87 00000119 [6C00000000000000] 
+    88 00000121 E8BF000000              	call printmsg
+    89                                  ; sal and print
+    90 00000126 488B0425[20010000]      	mov rax, [number1]
+    91 0000012E C0E002                  	sal al, 2
+    92 00000131 4889C7                  	mov rdi, rax
+    93 00000134 E8(00000000)            	call printb
+    94                                  ; print SAR (shift aritmetic right)
+    95 00000139 48BE-                   	mov rsi, msg8
+    95 0000013B [8A00000000000000] 
+    96 00000143 E89D000000              	call printmsg
+    97                                  ; sar and print
+    98 00000148 488B0425[20010000]      	mov rax, [number1]
+    99 00000150 C0F802                  	sar al, 2
+   100 00000153 4889C7                  	mov rdi, rax
+   101 00000156 E8(00000000)            	call printb
+   102                                  ; print ROL (rate left)
+   103 0000015B 48BE-                   	mov rsi, msg9
+   103 0000015D [A800000000000000] 
+   104 00000165 E87B000000              	call printmsg
+   105                                  ; rol and print
+   106 0000016A 488B0425[20010000]      	mov rax, [number1]
+   107 00000172 C0C002                  	rol al, 2
+   108 00000175 4889C7                  	mov rdi, rax
+   109 00000178 E8(00000000)            	call printb
+   110 0000017D 48BE-                   	mov rsi, msg10
+   110 0000017F [C600000000000000] 
+   111 00000187 E859000000              	call printmsg
+   112 0000018C 488B0425[28010000]      	mov rax, [number2]
+   113 00000194 C0C002                  	rol al, 2
+   114 00000197 4889C7                  	mov rdi, rax
+   115 0000019A E8(00000000)            	call printb
+   116                                  ; print ROR (rotete right)
+   117 0000019F 48BE-                   	mov rsi, msg11
+   117 000001A1 [E400000000000000] 
+   118 000001A9 E837000000              	call printmsg
+   119                                  ; ror and print
+   120 000001AE 488B0425[20010000]      	mov rax, [number1]
+   121 000001B6 C0C802                  	ror al, 2
+   122 000001B9 4889C7                  	mov rdi, rax
+   123 000001BC E8(00000000)            	call printb
+   124 000001C1 48BE-                   	mov rsi, msg12
+   124 000001C3 [0201000000000000] 
+   125 000001CB E815000000              	call printmsg
+   126 000001D0 488B0425[28010000]      	mov rax, [number2]
+   127 000001D8 C0C802                  	ror al, 2
+   128 000001DB 4889C7                  	mov rdi, rax
+   129 000001DE E8(00000000)            	call printb
+   130                                  
+   131 000001E3 C9                      	leave
+   132 000001E4 C3                      	ret
+   133                                  ; -------------------------
+   134                                  printmsg:				; print the heading for every bit operation
+   135                                  section .data
+   136 00000130 257300                  	.fmtstr	db	"%s", 0
+   137                                  section .text
+   138 000001E5 48BF-                   	mov rdi, .fmtstr
+   138 000001E7 [3001000000000000] 
+   139 000001EF B800000000              	mov rax, 0
+   140 000001F4 E8(00000000)            	call printf
+   141 000001F9 C3                      	ret

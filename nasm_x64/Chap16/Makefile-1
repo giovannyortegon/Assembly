@@ -1,0 +1,5 @@
+# bits.asm
+main:	obj.o
+	gcc -o main obj.o -no-pie
+obj.o:	bits.asm
+	nasm -f elf64 -g -F dwarf bits.asm -o obj.o

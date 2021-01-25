@@ -1,0 +1,95 @@
+     1                                  ; function6.asm
+     2                                  extern printf
+     3                                  section .data
+     4 00000000 41                      	first	db "A"
+     5 00000001 42                      	second	db "B"
+     6 00000002 43                      	third	db "C"
+     7 00000003 44                      	fourth	db "D"
+     8 00000004 45                      	fifth	db "E"
+     9 00000005 46                      	sixth	db "F"
+    10 00000006 47                      	seventh	db "G"
+    11 00000007 48                      	eighth	db "H"
+    12 00000008 49                      	ninth	db "I"
+    13 00000009 4A                      	tenth	db "J"
+    14 0000000A 54686520737472696E-     	fmt		db "The string is: %s", 10, 0
+    14 00000013 672069733A2025730A-
+    14 0000001C 00                 
+    15                                  section .bss
+    16 00000000 <res Bh>                	flist	resb 11		; length of string + terminating 0
+    17                                  section .text
+    18                                  	global main
+    19                                  main:
+    20 00000000 55                      	push rbp
+    21 00000001 4889E5                  	mov rbp, rsp
+    22                                  
+    23 00000004 48BF-                   	mov rdi, flist		; length
+    23 00000006 [0000000000000000] 
+    24 0000000E 48BE-                   	mov rsi, first		; fill the registers
+    24 00000010 [0000000000000000] 
+    25 00000018 48BA-                   	mov rdx, second
+    25 0000001A [0100000000000000] 
+    26 00000022 48B9-                   	mov rcx, third
+    26 00000024 [0200000000000000] 
+    27 0000002C 49B8-                   	mov r8, fourth
+    27 0000002E [0300000000000000] 
+    28 00000036 49B9-                   	mov r9, fifth
+    28 00000038 [0400000000000000] 
+    29 00000040 68[09000000]            	push tenth			; now start pushing in
+    30 00000045 68[08000000]            	push ninth			; reverse order
+    31 0000004A 68[07000000]            	push eighth
+    32 0000004F 68[06000000]            	push seventh
+    33 00000054 68[05000000]            	push sixth
+    34 00000059 E820000000              	call lfunc			; call the function
+    35                                  ; printf the result
+    36 0000005E 48BF-                   	mov rdi, fmt
+    36 00000060 [0A00000000000000] 
+    37 00000068 48BE-                   	mov rsi, flist
+    37 0000006A [0000000000000000] 
+    38 00000072 B800000000              	mov rax, 0
+    39 00000077 E8(00000000)            	call printf
+    40                                  
+    41 0000007C C9                      	leave
+    42 0000007D C3                      	ret
+    43                                  ; -----------------------
+    44                                  lfunc:
+    45 0000007E 55                      	push rbp
+    46 0000007F 4889E5                  	mov rbp, rsp
+    47                                  
+    48 00000082 4831C0                  	xor rax, rax		; clear rax (especially higher bits)
+    49 00000085 8A06                    	mov al, byte [rsi]	; move content 1st argument to al
+    50 00000087 8807                    	mov [rdi], al		; store al to memory
+    51 00000089 8A02                    	mov al, byte[rdx]	; move content 2nd argument to al
+    52 0000008B 884701                  	mov [rdi + 1], al	; store al to memory
+    53 0000008E 8A01                    	mov al, byte[rcx]	; etc for the other arguments
+    54 00000090 884702                  	mov [rdi + 2], al
+    55 00000093 418A00                  	mov al, byte[r8]
+    56 00000096 884703                  	mov [rdi + 3], al
+    57 00000099 418A01                  	mov al, byte[r9]
+    58 0000009C 884704                  	mov [rdi+4], al
+    59                                  ; now fetch the arguments from the stack
+    60 0000009F 53                      	push rbx			; callee saved
+    61 000000A0 4831DB                  	xor rbx, rbx
+    62                                  
+    63 000000A3 488B4510                	mov rax, qword[rbp+16]	; first value: initial stack
+    64                                  	; + rip, rbp
+    65 000000A7 8A18                    	mov bl, byte[rax]			; extract the character
+    66 000000A9 885F05                  	mov [rdi + 5], bl			; store the character to memory
+    67 000000AC 488B4518                	mov rax, qword[rbp + 24]	; continue with next value
+    68 000000B0 8A18                    	mov bl, byte[rax]
+    69 000000B2 885F06                  	mov [rdi + 6], bl
+    70 000000B5 488B4520                	mov rax, qword[rbp + 32]
+    71 000000B9 8A18                    	mov bl, byte[rax]
+    72 000000BB 885F07                  	mov [rdi+7], bl
+    73 000000BE 488B4528                	mov rax, qword[rbp + 40]
+    74 000000C2 8A18                    	mov bl, byte[rax]
+    75 000000C4 885F08                  	mov [rdi + 8], bl
+    76 000000C7 488B4530                	mov rax, qword[rbp + 48]
+    77 000000CB 8A18                    	mov bl, byte[rax]
+    78 000000CD 885F09                  	mov [rdi + 9], bl
+    79 000000D0 B300                    	mov bl, 0
+    80 000000D2 885F0A                  	mov [rdi + 10], bl			; store '\0'
+    81                                  
+    82 000000D5 5B                      	pop rbx				; calleer saved
+    83 000000D6 4889EC                  	mov rsp, rbp
+    84 000000D9 5D                      	pop rbp
+    85 000000DA C3                      	ret
