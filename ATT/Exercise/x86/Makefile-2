@@ -1,4 +1,5 @@
+# average.s
 main: obj.o
 	ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc -o main obj.o
-obj.o: mul_to_array.s
-	as -32 -gstabs mul_to_array.s -o obj.o
+obj.o: average.s
+	as -32 -gstabs average.s -o  obj.o
