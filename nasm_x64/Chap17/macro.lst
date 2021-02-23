@@ -1,0 +1,66 @@
+     1                                  ; macro.asm
+     2                                  extern printf
+     3                                  %define double_it(r)	sal r, 1	; single line macro
+     4                                  
+     5                                  ;  multiline macro
+     6                                  %macro prntf 2		; multiline macro with 2 arguments
+     7                                  
+     8                                  section .data
+     9                                  	%%arg1		db %1, 0			; First argument
+    10                                  	%%fmtint	db "%s %ld", 10, 0	; formatstring
+    11                                  section .text		; the printf arguments
+    12                                  	mov rdi, %%fmtint
+    13                                  	mov rsi, %%arg1
+    14                                  	mov rdx, [%2]			; second argument
+    15                                  	mov rax, 0				; no floating point
+    16                                  	call printf
+    17                                  %endmacro
+    18                                  ; End of multiline macro
+    19                                  
+    20                                  section .data
+    21 00000000 0F00000000000000        	number dq 15
+    22                                  section .bss
+    23                                  section .text
+    24                                  	global main
+    25                                  main:
+    26 00000000 55                      	push rbp
+    27 00000001 4889E5                  	mov rbp, rsp
+    28                                  
+    29                                  	prntf "The number is ", number
+     7                              <1> 
+     8                              <1> section .data
+     9 00000008 546865206E756D6265- <1>  %%arg1 db %1, 0
+     9 00000011 722069732000        <1>
+    10 00000017 257320256C640A00    <1>  %%fmtint db "%s %ld", 10, 0
+    11                              <1> section .text
+    12 00000004 48BF-               <1>  mov rdi, %%fmtint
+    12 00000006 [1700000000000000]  <1>
+    13 0000000E 48BE-               <1>  mov rsi, %%arg1
+    13 00000010 [0800000000000000]  <1>
+    14 00000018 488B1425[00000000]  <1>  mov rdx, [%2]
+    15 00000020 B800000000          <1>  mov rax, 0
+    16 00000025 E8(00000000)        <1>  call printf
+    30 0000002A 488B0425[00000000]      	mov rax, [number]
+    31                                  
+    32 00000032 48D1E0                  	double_it(rax)
+    33                                  
+    34 00000035 48890425[00000000]      	mov [number], rax
+    35                                  
+    36                                  	prntf "The number times 2 is ", number
+     7                              <1> 
+     8                              <1> section .data
+     9 0000001F 546865206E756D6265- <1>  %%arg1 db %1, 0
+     9 00000028 722074696D65732032- <1>
+     9 00000031 2069732000          <1>
+    10 00000036 257320256C640A00    <1>  %%fmtint db "%s %ld", 10, 0
+    11                              <1> section .text
+    12 0000003D 48BF-               <1>  mov rdi, %%fmtint
+    12 0000003F [3600000000000000]  <1>
+    13 00000047 48BE-               <1>  mov rsi, %%arg1
+    13 00000049 [1F00000000000000]  <1>
+    14 00000051 488B1425[00000000]  <1>  mov rdx, [%2]
+    15 00000059 B800000000          <1>  mov rax, 0
+    16 0000005E E8(00000000)        <1>  call printf
+    37                                  
+    38 00000063 C9                      	leave
+    39 00000064 C3                      	ret
