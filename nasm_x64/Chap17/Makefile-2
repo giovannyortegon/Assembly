@@ -1,0 +1,5 @@
+# console1.asm  Makefile
+main: obj.o
+	gcc obj.o -o main -no-pie
+obj.o: console1.asm
+	nasm -f elf64 -g -F dwarf console1.asm -o obj.o
