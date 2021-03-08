@@ -38,10 +38,10 @@ fact:
 	mov rbp, rsp
 ;	frame 1, 1, 1
 	sub rsp, 32
-
+; if n == 1 
 	cmp rdi, 1			; compare n with 1
 	jg	greater			; if n <= 1, return 1
-; return 1 Error
+; return 1
 	mov eax, 1
 	leave
 	ret
