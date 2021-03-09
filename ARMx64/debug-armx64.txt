@@ -2,6 +2,9 @@
 $ sudo apt update -y && sudo apt upgrade -y
 $ sudo apt install qemu-user qemu-user-static gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu binutils-aarch64-linux-gnu-dbg build-essential
 
+# Arch
+sudo pacman -S qemu aarch64-linux-gnu-binutils aarch64-linux-gnu-gcc aarch64-linux-gnu-gdb
+
 # Compile
 # Makefile
 
