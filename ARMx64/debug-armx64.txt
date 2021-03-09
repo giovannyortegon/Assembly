@@ -1,6 +1,6 @@
 # Install
-sudo apt update -y && sudo apt upgrade -y
-azeria@ubuntu:~$ sudo apt install qemu-user qemu-user-static gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu binutils-aarch64-linux-gnu-dbg build-essential
+$ sudo apt update -y && sudo apt upgrade -y
+$ sudo apt install qemu-user qemu-user-static gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu binutils-aarch64-linux-gnu-dbg build-essential
 
 # Compile
 # Makefile
