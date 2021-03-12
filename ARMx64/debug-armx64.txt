@@ -1,9 +1,10 @@
-# Install
+# Install Debian
 $ sudo apt update -y && sudo apt upgrade -y
 $ sudo apt install qemu-user qemu-user-static gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu binutils-aarch64-linux-gnu-dbg build-essential
 $ sudo apt install gdb-multiarch
 
-# Arch
+# Install Arch
+sudo pacman -Syyu
 sudo pacman -S qemu aarch64-linux-gnu-binutils aarch64-linux-gnu-gcc aarch64-linux-gnu-gdb
 
 # Compile
@@ -14,7 +15,7 @@ OBJS = name_program.o
 ifdef DEBUG
 	DEBUGFLGS = -ggdb3
 else
-	DEBUGFLGS = 
+	DEBUGFLGS =
 endif
 %.o : %.s
 	$(TOOLPATH)/as $(DEBUGFLGS) $< -o $@
@@ -25,12 +26,15 @@ make DEBUG=1
 
 # To Debug
 
-# First Terminal
-$ qemu-aarch64 -L /usr/aarch64-linux-gnu -g 1234 ./main 
+# First Terminal on Debian or Arch
+$ qemu-aarch64 -L /usr/aarch64-linux-gnu -g 1234 ./main
 
-# Second Terminal
+# Second Terminal on Debian
 $ gdb-multiarch -q --nh -ex 'set architecture arm64' -ex 'file main' -ex 'target remote :1234' -ex 'layout split' -ex 'layout regs'
+
+# Second Terminal on Arch
+$ aarch64-linux-gnu-gdb -q --nh -ex 'set architecture arm64' -ex 'file main' -ex 'target remote :1234' -ex 'layout split' -ex 'layout regs'
 
 (gdb) break _start
 
-(next) next
+(gdb) next
