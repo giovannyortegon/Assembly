@@ -6,13 +6,11 @@ section .text
     extern printf
 
 main: 
-    frame 6,2,3
     push rbp
     mov rbp, rsp
-    sub rsp, frame_size     ; will be 32 
+    sub rsp, 32
 
-    ;mov rcx, msg           
-    lea rcx, [msg]         ; parameter 1 for printf
+    lea rcx, [msg]          ; parameter 1 for printf
     call printf
 
     xor eax, eax            ; return 0
