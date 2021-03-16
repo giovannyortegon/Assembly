@@ -1,2 +1,2 @@
 ml /c /coff HelloWorld.asm
-link /subsystem:console HelloWorld.objlin
+link /subsystem:console HelloWorld.obj
