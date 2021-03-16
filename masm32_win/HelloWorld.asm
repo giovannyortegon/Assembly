@@ -1,4 +1,4 @@
-include %masm32rt.inc
+include \masm32\include\masm32rt.inc
 	.data
 msg db "Hello Word", 0
 	.code
