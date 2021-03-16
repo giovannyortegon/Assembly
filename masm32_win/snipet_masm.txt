@@ -1,0 +1,19 @@
+.Const
+
+.Data?
+
+.Data
+
+hInst		HINSTANCE	NULL
+
+
+.Code
+
+start:
+	Invoke GetModuleHandle, NULL
+	Mov hInst, Eax
+	;=====================
+	; Write your code here
+	;=====================
+	Invoke ExitProcess, 0
+End start
