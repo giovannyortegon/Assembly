@@ -1,7 +1,6 @@
-# movn_add.s
-TOOLPATH = /usr/aarch64-linux-gnu/bin/
-DEBUGFLGS = -ggdb3
+# add_adc.s
+TOOLPATH = /usr/aarch64-linux-gnu/bin
 main: obj.o
-	$(TOOLPATH)/ld obj.o -o main
-obj.o: movn_add.s
-	$(TOOLPATH)/as $(DEBUGFLGS) movn_add.s -o obj.o
+	$(TOOLPATH)/ld -o main obj.o
+obj.o: add_adc.s
+	$(TOOLPATH)/as -g add_adc.s -o obj.o
