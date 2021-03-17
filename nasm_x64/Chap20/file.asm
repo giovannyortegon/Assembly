@@ -1,13 +1,13 @@
 ; file.asm
 section .data
 ;expressions used for conditional assembly
-CREATE		equ 1
-OVERWRITE	equ 1
-APPEND		equ 1
+CREATE		equ 0
+OVERWRITE	equ 0
+APPEND		equ 0
 O_WRITE		equ 1
 READ		equ 1
 O_READ		equ 1
-DELETE		equ 1
+DELETE		equ 0
 
 ; syscall symbols
 NR_read		equ 0
@@ -38,7 +38,7 @@ len1		dq	$-text1-1	; remove 0
 text2		db	"2. Here I am!", NL, 0
 len2		dq	$-text2-1	; remove 0
 text3		db	"3. Alife and kicking!", NL, 0
-len3		dq	$-test3-1	; remove 0
+len3		dq	$-text3-1	; remove 0
 text4		db	"Adios !!!", NL, 0
 len4		dq	$-text4-1
 ; Errors
@@ -53,7 +53,7 @@ error_Print		db "Error printing string", NL, 0
 error_Position	db "Error positioning in file", NL, 0
 ; Success
 success_Create	db "File created and opened", NL, 0
-success_Close	db "File closed", Nl, NL, 0
+success_Close	db "File closed",NL, NL, 0
 success_Write	db "Written to file", NL, 0
 success_Open	db "File opened for R/W", NL, 0
 success_Append	db "File opened for appending", NL, 0
@@ -97,11 +97,11 @@ main:
 	mov rdi, qword[FD]
 	mov rsi, text2
 	mov rdx, qword[len2]
-	call wirteFile
+	call writeFile
 ; close file
 	mov rdi, qword[FD]
 	call closeFile
-%END IF
+%ENDIF
 %IF APPEND
 ; OPEN AND APPEND TO A FILE, THEN CLOSE
 ; open file to append
@@ -112,7 +112,7 @@ main:
 	mov rdi, qword [FD]
 	mov rsi, text3
 	mov rdx, qword [len3]
-	call wirteFile
+	call writeFile
 ; close file
 	mov rdi, qword[FD]
 	call closeFile
@@ -212,7 +212,7 @@ deleteFile:
 	jl deleteerror
 	mov rdi, success_Delete
 	call printString
-	rert
+	ret
 deleteerror:
 	mov rdi, error_Delete
 	call printString
@@ -236,3 +236,99 @@ appenderror:
 	call printString
 	ret
 ; -------------------------------------------------------------------
+	global openFile
+openFile:
+	mov rax, NR_open
+	mov rsi, O_RDWR
+	syscall
+	cmp rax, 0
+	jl openerror
+	mov rdi, success_Open
+	push rax				; caller saved
+	call printString
+	pop rax					; caller saved
+	ret
+openerror:
+	mov rdi, error_Open
+	call printString
+	ret
+; ------------------------------------------------------------------
+	global writeFile
+writeFile:
+	mov rax, NR_write
+	syscall
+	cmp rax, 0
+	jl writeerror
+	mov rdi, success_Write
+	call printString
+	ret
+writeerror:
+	mov rdi, error_Write
+	call printString
+	ret
+; -----------------------------------------------------------------
+	global positionFile
+positionFile:
+	mov rax, NR_lseek
+	syscall
+	cmp rax, 0
+	jl positionerror
+	mov rdi, success_Position
+	call printString
+	ret
+positionerror:
+	mov rdi, error_Position
+	call printString
+	ret
+; -----------------------------------------------------------------
+	global closrFile
+closeFile:
+	mov rax, NR_close
+	syscall
+	cmp rax, 0
+	jl closeerror
+	mov rdi, success_Close
+	call printString
+	ret
+closeerror:
+	mov rdi, error_Close
+	call printString
+	ret
+;------------------------------------------------------------------
+	global createFile
+createFile:
+	mov rax, NR_create
+	mov rsi, S_IRUSR | S_IRUSR
+	syscall
+	cmp rax, 0
+	jl creatorerror
+	mov rdi, success_Create
+	push rax					; caller saved
+	call printString
+	pop rax
+	ret
+creatorerror:
+	mov rdi, error_Create
+	call printString
+	ret
+; PRINT FEEDBACK
+; --------------------------------
+	 global printString
+printString:
+; count characters
+	mov r12, rdi
+	mov rdx, 0
+strLoop:
+	cmp byte[r12], 0
+	je strDone
+	inc rdx
+	inc r12
+	jmp strLoop
+strDone:
+	cmp rdx, 0
+	je prtDone
+	mov rsi, rdi
+	mov rax, 1
+	mov rdi, 1
+prtDone:
+	ret
