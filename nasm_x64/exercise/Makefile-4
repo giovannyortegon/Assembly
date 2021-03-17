@@ -1,0 +1,5 @@
+# recursion
+main: obj.o
+	gcc -o main obj.o -no-pie
+obj.o:
+	nasm -felf64 -g -F dwarf recursion.asm -o obj.o
