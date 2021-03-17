@@ -1,5 +1,7 @@
-# two_points.asm
-main: obj.o
-	gcc -o main obj.o -no-pie
-two_points.o: two_points.asm
-	nasm -f elf64 -g -F dwarf two_points.asm
+#  bill.asm
+main: obj.o calculate.o
+	gcc -o main obj.o calculate.o -no-pie
+calculate.o: calculate.asm
+	nasm -felf64 -g -F dwarf calculate.asm
+obj.o: bill.asm
+	nasm -felf64 -g -F dwarf bill.asm -o obj.o
