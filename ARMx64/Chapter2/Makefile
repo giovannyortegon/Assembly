@@ -1,10 +1,7 @@
-# movexamps.s
-OBJS = movexamps.o
-DEBUGFLGS = -ggdb3
+#adcs.s
+OBJS = adcs.o
 
-%.o : %.s
-	as $(DEBUGFLGS) $< -o $@
+%.o : abcs.s
+	as %< -o $@
 main: $(OBJS)
-	ld $(OBJS) -o main
-clean:
-	rm main movexamps.o
+	ld -o main $(OBJS)
