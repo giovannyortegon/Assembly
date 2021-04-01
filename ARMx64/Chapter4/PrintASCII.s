@@ -41,7 +41,7 @@ cont:					// end if
 	mov x0, #1			// 1 - stdout
 	ldr	x1, =hexstr		// string to print
 	mov x2, #19			// length of our string
-	mov x8, #64			// linux wirte system call
+	mov x8, #64			// linux write system call
 	svc 0
 
 // Setup the parameters to exit the program
