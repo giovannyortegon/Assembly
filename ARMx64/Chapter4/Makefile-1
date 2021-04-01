@@ -1,0 +1,6 @@
+# for_loop.s
+TOOLPATH = /usr/aarch64-linux-gnu/bin
+main: obj.o
+	$(TOOLPATH)/ld -o main obj.o
+obj.o: for_loop.s
+	$(TOOLPATH)/as -g for_loop.s -o obj.o
