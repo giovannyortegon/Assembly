@@ -37,8 +37,17 @@ _start:
 // Example of  a MOV that the Assembler will change to MOVN
 	mov w1, #0xFFFFFFFE		// (-2)
 
+//print message fineshed
+  mov x0, #1
+  ldr x1, =msg
+  mov x2, #11
+  mov x8, #64
+  svc 0
 // Setup the parameters to exit the program
 // and then call Linux to do it
 	mov x0, #0
 	mov x8, #93		// syscall exit
 	SVC 0
+
+.data
+  msg: .ascii "compilado!\n"
