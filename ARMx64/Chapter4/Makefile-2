@@ -1,0 +1,6 @@
+# while_loop.s
+TOOLPATH = /usr/aarch64-linux-gnu/bin
+main: obj.o
+	$(TOOLPATH)/ld -o main obj.o
+obj.o: while_loop.s
+	$(TOOLPATH)/as -g while_loop.s -o obj.o
