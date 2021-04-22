@@ -1,5 +1,5 @@
-# Makefile
+# upper.s
 main: obj.o
 	ld -o main obj.o
-obj.o: LoadAddress.s
-	as -ggdb3 LoadAddress.s -o obj.o
+obj.o: upper.s
+	as -g upper.s -o obj.o
