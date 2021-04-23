@@ -1,5 +1,5 @@
-# copy_array.asm
-main: obj.o
-	gcc -o main obj.o -no-pie
-obj.o: copy_array.asm
-	nasm -f elf64 -g -F dwarf copy_array.asm -o obj.o
+# random_range
+main: random_range.o
+	gcc random_range.o -o main -no-pie
+random_range.o: random_range.asm
+	nasm -felf64 -g -F dwarf random_range.asm
