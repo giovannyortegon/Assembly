@@ -1,5 +1,6 @@
-# upper.s
+# array.s
+TOOLPATH=/usr/aarch64-linux-gnu/bin/
 main: obj.o
-	ld -o main obj.o
-obj.o: upper.s
-	as -g upper.s -o obj.o
+    $(TOOLPATH)/ld obj.o -o main
+obj.o: array.s
+    $(TOOLPATH)/as -g array.s -o obj.o
