@@ -1,0 +1,5 @@
+# sse_unaligned.asm
+main: obj.o
+	gcc obj.o -o main -no-pie
+obj.o: sse_unaligned.asm
+	nasm -felf64 sse_unaligned.asm -o obj.o
