@@ -1,17 +1,9 @@
-# main - uppercase
+# mainmacro.s uppermacro.s
 TOOLPATH = /usr/aarch64-linux-gnu/bin/
-UPPEROBJS = main.o upper.o
-ifdef DEBUG
+UPPEROBJS = mainmacro.o uppermacro.o
 DEBUGFLGS = -g
-else
-DEBUGFLGS =
-endif
-LSTFLGS =
-
 all: upper
-
 %.o: %.s
-	$(TOOLPATH)/as $(DEBUGFLGS) $(LSTFLGS) $< -o $@
+	$(TOOLPATH)/as $(DEBUGFLGS) $< -o $@
 upper: $(UPPEROBJS)
 	$(TOOLPATH)/ld -o upper $(UPPEROBJS)
-
