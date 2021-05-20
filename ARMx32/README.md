@@ -1,9 +1,11 @@
 # Emulate ARM x32 program
 ## Install
-``
-$ sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 
 ``
+$ sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+``
+
+
 ## Install qemu emulator
 ``
 $ sudo apt install qemu-user qemu-user-static build-essential
