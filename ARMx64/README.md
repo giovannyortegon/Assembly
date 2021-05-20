@@ -29,7 +29,6 @@ $ sudo pacman -S qemu aarch64-linux-gnu-binutils aarch64-linux-gnu-gcc aarch64-l
 ## Using Makefile
 
 ``
-
 TOOLPATH=/usr/aarch64-linux-gnu/bin/ \
 OBJS = name_program.o \
 ifdef DEBUG \
@@ -42,7 +41,6 @@ endif \
 main: $(OBJS) \
 	$(TOOLPATH)/ld $(OBJS) -o main \
 make DEBUG=1 \
-
 ``
 
 # Compile, link and debug
