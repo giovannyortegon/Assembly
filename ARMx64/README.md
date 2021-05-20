@@ -1,23 +1,26 @@
-# Install on Debian
+# Install, Compile, link and debug
+
+## Install on Debian
 
 ``
 $ sudo apt update -y && sudo apt upgrade -y
+``
 
-$ sudo apt install qemu-user \
-                   qemu-user-static \
-                   gcc-aarch64-linux-gnu \
-                   g++-aarch64-linux-gnu \
-                   binutils-aarch64-linux-gnu \
-                   binutils-aarch64-linux-gnu-dbg
-                   build-essential
+``
+$ sudo apt install qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu binutils-aarch64-linux-gnu-dbg build-essential
+``
 
+``
 $ sudo apt install gdb-multiarch
 ``
 
-# Install on Arch
+## Install on Arch
+
 ``
 $ sudo pacman -Syyu
+``
 
+``
 $ sudo pacman -S qemu aarch64-linux-gnu-binutils aarch64-linux-gnu-gcc aarch64-linux-gnu-gdb
 ``
 
@@ -26,29 +29,20 @@ $ sudo pacman -S qemu aarch64-linux-gnu-binutils aarch64-linux-gnu-gcc aarch64-l
 ## Using Makefile
 
 ``
-TOOLPATH=/usr/aarch64-linux-gnu/bin/
 
-OBJS = name_program.o
+TOOLPATH=/usr/aarch64-linux-gnu/bin/ \
+OBJS = name_program.o \
+ifdef DEBUG \
+	DEBUGFLGS = -ggdb3 \
+else \
+	DEBUGFLGS = \
+endif \
+%.o : %.s \
+	$(TOOLPATH)/as $(DEBUGFLGS) $< -o $@ \
+main: $(OBJS) \
+	$(TOOLPATH)/ld $(OBJS) -o main \
+make DEBUG=1 \
 
-ifdef DEBUG
-
-	DEBUGFLGS = -ggdb3
-
-else
-
-	DEBUGFLGS =
-
-endif
-
-%.o : %.s
-
-	$(TOOLPATH)/as $(DEBUGFLGS) $< -o $@
-
-main: $(OBJS)
-
-	$(TOOLPATH)/ld $(OBJS) -o main
-
-make DEBUG=1
 ``
 
 # Compile, link and debug
