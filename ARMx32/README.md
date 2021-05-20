@@ -38,7 +38,11 @@ Start gdb
 ``
 $ gdb-multiarch -q --nh -ex 'set architecture arm' -ex 'file main' -ex 'target remote :1234' -ex 'layout split' -ex 'layout regs'
 ``
+
 ``
 (gdb) break _start
+``
+
+``
 (gdb) next
 ``
