@@ -1,0 +1,5 @@
+# program6a.s - suma dos numeros
+main: obj.o
+	arm-linux-gnueabihf-ld obj.o -o main
+obj.o: program6a.s
+	arm-linux-gnueabihf-as -g program6a.s -o obj.o
