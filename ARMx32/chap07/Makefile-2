@@ -1,0 +1,5 @@
+# Program7a.s
+main: obj.o
+	arm-linux-gnueabihf-ld obj.o -o main
+obj.o: Program7a.s
+	arm-linux-gnueabihf-as -g Program7b.s -o obj.o
