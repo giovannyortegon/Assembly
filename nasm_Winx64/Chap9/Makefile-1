@@ -1,4 +1,0 @@
-hello_world.exe: hello_world.obj
-	gcc -g -o hello_world.exe hello_world.obj
-hello_world.obj: hello_world.asm
-	nasm -f win64 -g -F cv8 hello_world.asm -l hello_world.lst
