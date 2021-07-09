@@ -1,3 +1,7 @@
+section .data
+scanf_fmt: db  "%ld", 0
+;num resq 1
+
 ; node struct
 struc node
     n_value resq 1
@@ -5,23 +9,17 @@ struc node
     alignb  8
 endstruc
 
-; create list - empty list
-new_list:
-    xor eax, eax
-    ret
-
 ; -------- maina function --------
+section .text
     global main
-    extern printf, scanf
+    extern printf, scanf, malloc
 
 main:
+;section .data
 .list   equ local1
 .k      equ local2
 
-section .data
-    .scanf_fmt: db  "%ld", 0
-
-section .text
+;section .text
     push rbp
     mov rbp, rsp
     frame 2, 2, 2
@@ -29,10 +27,10 @@ section .text
 
     call new_list           ; create a list
 
-    mov [rbp +  .list], rax
+    mov [rbp + .list], rax
 
 .more:
-    lea rdx, [.scanf_fmt]
+    lea rcx, [scanf_fmt]
     lea rdx, [rbp + .k]
     call scanf              ; read k
 
@@ -53,7 +51,14 @@ section .text
 .done:
     leave
     ret
+    
+; -----------------------------
+; create list - empty list
+new_list:
+    xor eax, eax
+    ret
 
+; -----------------------------
 ; insert function
 ; -------- insert node --------
 insert:
@@ -75,10 +80,32 @@ section .text
     call malloc                 ; rax = node pointer
 
 ; list pointer
-    mov r8, [rbp + .list]       ; get list pointer
-    mov [rax + n_next], r8      ; r8 is next new node_size
+;    mov r8, [rbp + .list]       ; get list pointer
+;    mov [rax + n_next], r8      ; r8 is next new node_size
+;    mov r9, [rbp + .k]          ; get k
+;    mov [rax + n_value], r9     ; save k in node_size
+
+    mov [rax + n_next], dword 0      ; r8 is next new node_size
     mov r9, [rbp + .k]          ; get k
     mov [rax + n_value], r9     ; save k in node_size
+
+    mov r8, [rbp + .list]
+    cmp r8, 0
+    je .end
+    
+    mov rcx, [r8 + n_next]
+    
+.next:    
+    cmp rcx, 0
+    je ._add 
+    mov rcx, [rcx + n_next]
+    jne .next    
+
+._add:
+    mov [rcx + n_next], rax
+    mov rax, rcx
+           
+.end: 
     leave
     ret
     
