@@ -1,0 +1,5 @@
+# sse_string2_imp.asm
+main: obj.o
+	gcc -g obj.o -o main -no-pie
+obj.o: sse_string2_imp.asm
+	nasm -felf64 -g -F dwarf sse_string2_imp.asm -o obj.o
