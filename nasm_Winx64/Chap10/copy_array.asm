@@ -2,7 +2,7 @@ segment .data
     a: dd  1, 2, 3, 4, 5
 
 segment .bss
-    b: resd 10
+    b: resd 5 
 
 segment .text
     global main
@@ -13,7 +13,7 @@ main:
     sub rsp, 48
     
     lea rcx, [b]    ; destination
-    lea rdx, [c]    ; source
+    lea rdx, [a]    ; source
     mov r8d, 5      ; count
     call copy_array
     
@@ -27,7 +27,9 @@ copy_array:
     sub rsp, 48
     
     xor r9d, r9d        ; start with 0 for index
-    
+
+
+
 more:
     mov eax, [rdx + 4 * r9] ; load dword
     mov [rcx + 4 * r9], eax ; store qword
@@ -35,5 +37,5 @@ more:
     cmp r9, r8              ; index vs count register
     jne more                ; if not equal, more to do
     
-    leave
+	leave
     ret 
