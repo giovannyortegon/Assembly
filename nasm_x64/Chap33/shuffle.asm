@@ -73,7 +73,7 @@ main:
 	mov rdi, fmt00
 	call printf					; printf title
 
-	movdqu xmm0, [rbq - 16]		; restore xmm0 after printf
+	movdqu xmm0, [rbp - 16]		; restore xmm0 after printf
 	call print_xmm0d			; print xmm0
 
 	movdqu xmm0, [rbp - 16]		; restore xmm0 after printf
@@ -115,3 +115,123 @@ main:
 
 	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
 	call print_xmm0d				; print the content of xmm0
+
+; shuffle: broadcast dword index 3
+	movdqu xmm0, [rbp-16]			; restore xmm0
+	pshufd xmm0, xmm0, 11111111b	; shuffle
+	mov rdi, fmt2
+	mov rsi, 3						; print title
+	movdqu [rbp-32], xmm0			; printf destroys xmm0
+	call printf
+
+	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
+	call print_xmm0d				; print the content of xmm0
+
+; SHUFFLE-REVERSE
+; reverese double words
+	movdqu xmm0, [rbp-16]			; restore xmm0
+	pshufd xmm0, xmm0 , 00011011b	; shuffle
+	mov rdi, fmt4					; print title
+	movdqu [rbp-32], xmm0			; printf destroys xmm0
+	call printf
+
+	movdqu xmm0, [rbp-32]			; resotre xmm0 after printf
+	call print_xmm0d				; print the content of xmm0
+
+; SHUFFLE-ROTATE
+; rotate left
+	movdqu xmm0, [rbp-16]			; restore xmm0
+	pshufd xmm0, xmm0, 10010011b	; shffle
+	mov rdi, fmt6					; print title
+	movdqu [rbp-32], xmm0			; printf destroys xmm0
+	call printf
+
+	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
+	call print_xmm0d				; print the content of xmm0
+
+; rotate right
+	movdqu xmm0, [rbp-16]			; restore xmm0
+	pshufd xmm0, xmm0, 00111001b	; shuffle
+	mov rdi, fmt7					; print title
+	movdqu [rbp-32], xmm0			; printf destroys xmm0
+	call printf
+
+	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
+	call print_xmm0d				; print the content of xmm0
+
+; SHUFFLING BYTES
+	mov rdi, fmt9
+	call printf						; print title
+
+	movdqu xmm0, [char]				; load the character in xmm0
+	movdqu [rbp-32], xmm0			; printf destroys in xmm0
+	call print_xmm0b				; print the bytes in xmm0
+
+	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
+	movdqu xmm1, [bytereverse]		; load the mask
+	pshufb xmm0, xmm1				; shuffle bytes
+	mov rdi, fmt5					; print title
+	movdqu [rbp-32], xmm0			; printf destroys xmm0
+	call printf
+
+	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
+	call print_xmm0b				; print the content of xmm0
+	leave
+	ret
+
+; ------------------ function to print double words ------------------
+print_xmm0d:
+	push rbp
+	mov rbp, rsp
+
+	mov rdi, fmt3
+	xor rax, rax
+	pextrd esi, xmm0, 3			; extract the double words
+	pextrd edx, xmm0, 2			; in reverse, little endian
+	pextrd ecx, xmm0, 1
+	pextrd r8d, xmm0, 0
+	call printf
+
+	leave
+	ret
+
+; --------------------- function to print bytes ----------------------
+print_xmm0b:
+	push rbp
+	mov rbp, rsp
+
+	mov rdi, fmt8
+	xor rax, rax
+	pextrb	esi, xmm0, 0	; in reverse little endian
+	pextrb edx, xmm0, 1		; use registers first
+	pextrb ecx, xmm0, 2		; then the stack
+	pextrb r8d, xmm0, 3
+	pextrb r9d, xmm0, 4
+	pextrb eax, xmm0, 15
+
+	push rax
+	pextrb eax, xmm0, 14
+	push rax
+	pextrb eax, xmm0, 13
+	push rax
+	pextrb eax, xmm0, 12
+	push rax
+	pextrb eax, xmm0, 11
+	push rax
+	pextrb eax, xmm0, 10
+	push rax
+	pextrb eax, xmm0, 9
+	push rax
+	pextrb eax, xmm0, 8
+	push rax
+	pextrb eax, xmm0, 7
+	push rax
+	pextrb eax, xmm0, 6
+	push rax
+	pextrb eax, xmm0, 5
+	push rax
+	xor rax, rax
+	call printf
+
+	leave
+	ret
