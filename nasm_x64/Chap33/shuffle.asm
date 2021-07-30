@@ -62,7 +62,7 @@ main:
 	mov rdi, NL
 	call printf
 
-; buid xmm0 with the numbers
+; buid xmm0 with the numbers - using stack with  xmm0
 	pxor xmm0, xmm0
 	pinsrd xmm0, dword[number1], 0
 	pinsrd xmm0, dword[number2], 1
@@ -76,13 +76,11 @@ main:
 	movdqu xmm0, [rbp - 16]		; restore xmm0 after printf
 	call print_xmm0d			; print xmm0
 
-	movdqu xmm0, [rbp - 16]		; restore xmm0 after printf
-
 	; SHUFFLE-BROADCAST
 	; shuffle: broad least significant dword (index 0)
 
 	movdqu xmm0, [rbp-16]			; restore xmm0
-	pshufd xmm0, xmm0, 00000000b	; shuffle
+	pshufd xmm0, xmm0, 00000000b	; shuffle index 0, 0, 0, 0
 
 	mov rdi, fmt2
 	mov rsi, 0						; print title
@@ -94,7 +92,7 @@ main:
 
 	; shuffle: broadcast dword index 1
 	movdqu xmm0, [rbp - 16]			; restore xmm0
-	pshufd xmm0, xmm0, 01010101b	; shuffle
+	pshufd xmm0, xmm0, 01010101b	; shuffle - index 1, 1, 1, 1
 
 	mov rdi, fmt2
 	mov rsi, 1						; print title
@@ -106,7 +104,7 @@ main:
 
 	; shuffle: broadcast dword index 2
 	movdqu xmm0, [rbp-16]			; restore xmm0
-	pshufd xmm0, xmm0, 10101010b	; shuffle
+	pshufd xmm0, xmm0, 10101010b	; shuffle - 2, 2, 2, 2
 
 	mov rdi, fmt2
 	mov rsi, 2						; print title
@@ -118,7 +116,7 @@ main:
 
 ; shuffle: broadcast dword index 3
 	movdqu xmm0, [rbp-16]			; restore xmm0
-	pshufd xmm0, xmm0, 11111111b	; shuffle
+	pshufd xmm0, xmm0, 11111111b	; shuffle- 3, 3, 3, 3
 	mov rdi, fmt2
 	mov rsi, 3						; print title
 	movdqu [rbp-32], xmm0			; printf destroys xmm0
@@ -130,7 +128,7 @@ main:
 ; SHUFFLE-REVERSE
 ; reverese double words
 	movdqu xmm0, [rbp-16]			; restore xmm0
-	pshufd xmm0, xmm0 , 00011011b	; shuffle
+	pshufd xmm0, xmm0 , 00011011b	; shuffle - index 0, 1, 2, 3
 	mov rdi, fmt4					; print title
 	movdqu [rbp-32], xmm0			; printf destroys xmm0
 	call printf
@@ -141,7 +139,7 @@ main:
 ; SHUFFLE-ROTATE
 ; rotate left
 	movdqu xmm0, [rbp-16]			; restore xmm0
-	pshufd xmm0, xmm0, 10010011b	; shffle
+	pshufd xmm0, xmm0, 10010011b	; shffle index 2,1,0,3
 	mov rdi, fmt6					; print title
 	movdqu [rbp-32], xmm0			; printf destroys xmm0
 	call printf
@@ -151,7 +149,7 @@ main:
 
 ; rotate right
 	movdqu xmm0, [rbp-16]			; restore xmm0
-	pshufd xmm0, xmm0, 00111001b	; shuffle
+	pshufd xmm0, xmm0, 00111001b	; shuffle index 0,3,2,1
 	mov rdi, fmt7					; print title
 	movdqu [rbp-32], xmm0			; printf destroys xmm0
 	call printf
@@ -163,12 +161,12 @@ main:
 	mov rdi, fmt9
 	call printf						; print title
 
-	movdqu xmm0, [char]				; load the character in xmm0
+	movdqu xmm0, [char]				; load the character in xmm0 from 0 to 15
 	movdqu [rbp-32], xmm0			; printf destroys in xmm0
 	call print_xmm0b				; print the bytes in xmm0
 
 	movdqu xmm0, [rbp-32]			; restore xmm0 after printf
-	movdqu xmm1, [bytereverse]		; load the mask
+	movdqu xmm1, [bytereverse]		; load the mask from 15 to 0 index
 	pshufb xmm0, xmm1				; shuffle bytes
 	mov rdi, fmt5					; print title
 	movdqu [rbp-32], xmm0			; printf destroys xmm0
@@ -207,8 +205,8 @@ print_xmm0b:
 	pextrb ecx, xmm0, 2		; then the stack
 	pextrb r8d, xmm0, 3
 	pextrb r9d, xmm0, 4
-	pextrb eax, xmm0, 15
 
+	pextrb eax, xmm0, 15
 	push rax
 	pextrb eax, xmm0, 14
 	push rax
