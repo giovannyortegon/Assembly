@@ -121,4 +121,61 @@ pstrlen:
 	mov rax, -16					; avoid flag setting latter
 	pxor xmm0, xmm0					; search for 0 (end of string)
 
-.loop
+.loop:
+	add rax, 16						; avoid setting ZF
+	pcmpistri xmm0, [rdi+rax], 0x08	; 'equal each'
+	jnz .loop						; 0 found ?
+	add rax, rcx					; rax = bytes already handled
+
+; rcx = bytes handled in terminating loop
+	movdqu xmm0, [rbp-16]			; pop xmm0
+
+	leave
+	ret
+
+; --------------------------------------------
+; function for printing the mask
+; xmm0 contains the mask
+; rsi contains the number of bits to print (16 or less)
+print_mask:
+	push rbp
+	mov rbp, rsp
+	sub rsp, 16						; for saving xmm0
+
+	call reverse_xmm0				; little endian
+	pmovmskb r13d, xmm0				; mov byte mask to r13d
+	movdqu [rbp-16], xmm1			; push xmm1 because of printf
+
+	push rdi						; contains string1
+	mov edi, r13d					; contains mask to be printed
+	push rdx						; contains the mask
+	push rcx						; contains end of string flag
+	call print16b
+
+	pop rcx
+	pop rdx
+	pop rdi
+	movdqu xmm1, [rbp-16]			; pop xmm1
+
+	leave
+	ret
+; ----------------------------------------------
+; function for reversing, shuffling xmm0
+reverse_xmm0:
+
+section .data
+.bytereverse db 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 ; mask for reversing
+
+section .text
+	push rbp
+	mov rbp, rsp
+	sub rsp, 16
+
+	movdqu [rbp-16], xmm2
+	movdqu xmm2, [.bytereverse]		; load the mask in xmm2
+	pshfb xmm0, xmm2				; do the shuffle
+	movdqu xmm2, [rbp-16]			; pop xmm2
+
+	leave
+	ret
+
