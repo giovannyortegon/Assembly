@@ -16,7 +16,7 @@ section .bss
 section .text
 	global main
 	extern print16b
-	extern prinf
+	extern printf
 
 main:
 	push rbp
@@ -117,7 +117,7 @@ pstrlen:
 	mov rbp, rsp
 	sub rsp, 16						; for saving xmm0
 
-	movdqy [rbp-16], xmm0			; push xmm0
+	movdqu [rbp-16], xmm0			; push xmm0
 	mov rax, -16					; avoid flag setting latter
 	pxor xmm0, xmm0					; search for 0 (end of string)
 
@@ -173,7 +173,7 @@ section .text
 
 	movdqu [rbp-16], xmm2
 	movdqu xmm2, [.bytereverse]		; load the mask in xmm2
-	pshfb xmm0, xmm2				; do the shuffle
+	pshufb xmm0, xmm2				; do the shuffle
 	movdqu xmm2, [rbp-16]			; pop xmm2
 
 	leave
