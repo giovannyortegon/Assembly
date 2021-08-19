@@ -1,5 +1,5 @@
 TOOLPATH = /usr/aarch64-linux-gnu/bin/
-UPPEROBJS = mainlower.o lowermacro.o
+UPPEROBJS = main.o upper.o
 
 ifdef DEBUG
 DEBUGFLGS = -g
@@ -8,9 +8,9 @@ DEBUGFLGS =
 endif
 LSTFLGS =
 
-all: mainlower
+all: upper
 
 %.o : %.s
 	$(TOOLPATH)as $(DEBUGFLGS) $(LSTFLGS) $< -o $@
-mainlower: $(UPPEROBJS)
-	$(TOOLPATH)ld -o mainlower $(UPPEROBJS)
+upper: $(UPPEROBJS)
+	$(TOOLPATH)ld -o upper $(UPPEROBJS)
