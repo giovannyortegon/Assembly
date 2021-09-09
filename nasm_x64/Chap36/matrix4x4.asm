@@ -171,6 +171,7 @@ section .bss
 	.matrix2	resq	16
 	.matrix3	resq	16
 	.matrix4	resq	16
+	.matrixI	resq	16
 	.mxcsr		resd	1				; used for checking zero divisor
 
 section .text
@@ -261,3 +262,75 @@ section .text
 	vbroadcastsd ymm2, xmm13	; p2
 	vbroadcastsd ymm3, xmm14	; p3
 	pop rdi						; restore the address of the origianl matrix
+
+.loop1:
+	vmovapd	ymm0, [rdi+rax]
+	vmulpd ymm0, ymm0, ymm2
+	vmovapd [.matrix1 + rax], ymm0
+	vmovapd ymm0, [.matrix2 + rax]
+	vmulpd	ymm0, ymm0, ymm1
+	vmovapd [.matrix2+rax], ymm0
+	vmovapd ymm0, [.identity+rax]
+	vmulpd ymm0, ymm0, ymm3
+	vmovapd [.matrixI+rax], ymm0
+	add rax, 32
+	loop .loop1
+
+; add the four matrices and multiply by -1/p4
+	mov rcx, [.size]
+	xor rax, rax
+; compute -1/p4
+	movsd xmm0, [.one]
+	vdivsd xmm0, xmm0, xmm15		; 1/p4
+
+; check for zero division
+	stmxcsr [.mxcsr]
+	and dword[.mxcsr], 4
+	jnz .singular
+
+; no zero division
+	pop rsi							; recall address of inverse matrix
+	vxorpd xmm0, xmm0, [.minus_mask]; -1/p4
+	vbroadcastsd ymm2, xmm0
+
+; loop through the rows
+.loop2:
+; add the rows
+	vmovapd ymm0, [.matrix1+rax]
+	vaddpd ymm0, ymm0, [.matrix2+rax]
+	vaddpd ymm0, ymm0, [.matrix3+rax]
+	vaddpd ymm0, ymm0, ymm2					; multiply the row with -1/p4
+	vmovapd [rsi+rax], ymm0
+	add rax, 32
+	loop .loop2
+	xor rax, rax							; return 0, no error
+
+	leave
+	ret
+; -------------------------------------------------------------------
+.singular:
+	mov rax, 1								; return 1, singular matrix
+	leave
+	ret
+
+; --------------------------------------------------------------------
+; trace computation
+vtrace:
+	push rbp
+	mov rbp, rsp
+
+; build the matrix in memory
+	vmovapd ymm0, [rdi]
+	vmovapd ymm1, [rdi + 32]
+	vmovapd ymm2, [rdi + 64]
+	vmovapd ymm3, [rdi + 96]
+	vblendpd ymm0, ymm0, ymm1, 0010b
+	vblendpd ymm0, ymm0, ymm2, 0100b
+	vblendpd ymm0, ymm0, ymm3, 1000b
+	vhaddpd ymm0, ymm0, ymm0
+	vpermpd ymm0, ymm0, 00100111b
+	haddpd xmm0, xmm0
+
+	leave
+	ret
+; ----------------------------------------------------------------------
