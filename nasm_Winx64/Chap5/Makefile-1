@@ -1,5 +1,0 @@
-# test.asm
-test.exe: test.obj
-	gcc -o test.exe test.obj
-test.obj: test.asm
-	nasm -f win64 -g -F cv8 test.asm -l test.lst
