@@ -6,7 +6,7 @@ section .data
 	fmt3 db 10, "This is the transpose (AVX version): ", 10, 0
 	fmt4 db 10, "Number of loops: %d", 10, 0
 	fmt5 db "Sequential version elapsed cycles: %d", 10, 0
-	fmt6 db "AVX shuffle version elapsed cycles: %d". 10, 0
+	fmt6 db "AVX shuffle version elapsed cycles: %d", 10, 0
 	align 32
 
 	matrix	dq		1.,		2.,		3.,		4.
@@ -26,7 +26,7 @@ section .bss
 	bshi_cy		resq 1		; timers for sequential version
 	bslo_cy		resq 1
 	eshi_cy		resq 1
-	eslo_lo		resq 1
+	eslo_cy		resq 1
 
 section .text
 	global main
@@ -64,7 +64,7 @@ main:
 ; stop measuring the cycles
 	rdtscp
 	mov [eshi_cy], edx
-	mov [eshi_cy], eax
+	mov [eslo_cy], eax
 	cpuid
 
 ; printf the result
@@ -105,7 +105,7 @@ main:
 
 ; print the cycles
 ; cycles sequential version
-	mov rdx, [eslo_lo]
+	mov rdx, [eslo_cy]
 	mov rsi, [eshi_cy]
 	shl rsi, 32
 	or rsi, rdx				; rsi contains end time
@@ -139,4 +139,107 @@ main:
 	ret
 
 ; --------------------------------------------------------
-seq_tanspose:
+seq_transpose:
+	push rbp
+	mov rbp, rsp
+.loopx:
+	pxor xmm0, xmm0
+	xor r10, r10
+	xor rax, rax
+	mov r12, 4
+.loopo:
+	push rcx
+	mov r13, 4
+.loopi:
+	movsd xmm0, [rdi+r10]
+	movsd [rsi+rax], xmm0
+	add r10, 8
+	add rax, 32
+	dec r13
+	jnz .loopi
+	add rax, 8
+	xor rax, 10000000b	; rax - 128
+	inc rbx
+	dec r12
+	jnz .loopo
+	dec rdx
+	jnz .loopx
+
+	leave
+	ret
+
+; -----------------------------------
+AVX_transpose:
+	push rbp
+	mov rbp, rsp
+
+.loopx:								; the number of loops
+; load matrix into the registers
+	vmovapd ymm0, [rdi]				; 1  2  3  4
+	vmovapd ymm1, [rdi+32]			; 5  6  7  8
+	vmovapd ymm2, [rdi+64]			; 9  10 11 12
+	vmovapd ymm3, [rdi+96]			; 13 14 15 16
+; shuffle
+	vshufpd ymm12, ymm0, ymm1, 0000b	; 1  5  3  7
+	vshufpd ymm13, ymm0, ymm1, 1111b	; 2  6  4  8
+	vshufpd ymm14, ymm2, ymm3, 0000b	; 9  13 11 15
+	vshufpd ymm15, ymm2, ymm3, 1111b	; 10 14 12 16
+; permutate
+	vperm2f128 ymm0, ymm12, ymm14, 00100000b	; 1  5  9  13
+	vperm2f128 ymm1, ymm13, ymm15, 00100000b	; 2  6  10 14
+	vperm2f128 ymm2, ymm12, ymm14, 00110001b	; 3  7  11 15
+	vperm2f128 ymm3, ymm13, ymm15, 00110001b	; 4  8  12 16
+; write to memory
+	vmovapd [rsi], ymm0
+	vmovapd [rsi+32], ymm1
+	vmovapd [rsi+64], ymm2
+	vmovapd [rsi+96], ymm3
+	dec rdx
+	jnz .loopx
+
+	leave
+	ret
+; -----------------------------------
+printm4x4:
+section .data
+	.fmt db "%f", 9, "%f", 9, "%f", 9, "%f", 10, 0
+section .text
+	push rbp
+	mov rbp, rsp
+
+	push rbx			; callee saved
+	push r15
+
+	mov rdi, .fmt
+	mov rcx, 4
+	xor rbx, rbx		; row counter
+.loop:
+	movsd xmm0, [rsi+rbx]
+	movsd xmm1, [rsi+rbx+8]
+	movsd xmm2, [rsi+rbx+16]
+	movsd xmm3, [rsi+rbx+24]
+	mov rax, 4			; four floats
+
+	push rcx			; caller saved
+	push rsi
+	push rdi
+; align stack if need
+	xor r15, r15
+	test rsp, 0fh		; last byte is 8 (not aligned)?
+	setnz r15b			; set if not aligned
+	shl r15, 3			; multiply by 8
+	sub rsp, r15		; substract 0 or 8
+	call printf
+	add rsp, r15		; add 0 or 8
+
+	pop rdi
+	pop rsi
+	pop rcx
+	add rbx, 32			; next row
+	loop .loop
+
+	pop r15
+	pop rbx
+
+	leave
+	ret
