@@ -36,6 +36,7 @@ section .bss
 
 section .text
 	global main
+	extern printf
 main:
 	push rbp
 	mov rbp, rsp
@@ -117,4 +118,136 @@ main:
 	mov rdi, fmt30
 	call printf
 
+; cycles AVX blend version
+	mov rdx, [eblo_cy]
+	mov rsi, [ebhi_cy]
+	shl rsi, 32
+	or rsi, rdx
+	mov r8, [bblo_cy]
+	mov r9, [bbhi_cy]
+	shl r9, 32
+	or r9, r8
+	sub rsi, r9
 
+; print
+	mov rdi, fmt31
+	call printf
+
+	leave
+	ret
+
+; ----------------------------------------------
+seq_trace:
+	push rbp
+	mov rbp, rsp
+
+.loop0:
+	pxor xmm0, xmm0
+	mov rcx, 8
+	xor rax, rax
+	xor rbx, rbx
+
+.loop:
+	addss xmm0, [rdi+rax]
+	add rax, 36				; each row 32 bytes
+	loop .loop
+	cvtss2sd xmm0, xmm0
+	dec rsi
+	jnz .loop0
+
+	leave
+	ret
+; ----------------------------------------------
+blend_trace:
+	push rbp
+	mov rbp, rsp
+
+.loop:
+	; build the matrix in memory
+	vmovaps ymm0, [rdi]
+	vmovaps ymm1, [rdi+32]
+	vmovaps ymm2, [rdi+64]
+	vmovaps ymm3, [rdi+96]
+	vmovaps ymm4, [rdi+128]
+	vmovaps ymm5, [rdi+160]
+	vmovaps ymm6, [rdi+192]
+	vmovaps ymm7, [rdi+224]
+
+	vblendps ymm0, ymm0, ymm1, 00000010b
+	vblendps ymm0, ymm0, ymm2, 00000100b
+	vblendps ymm0, ymm0, ymm3, 00001000b
+	vblendps ymm0, ymm0, ymm4, 00010000b
+	vblendps ymm0, ymm0, ymm5, 00100000b
+	vblendps ymm0, ymm0, ymm6, 01000000b
+	vblendps ymm0, ymm0, ymm7, 10000000b
+	vhaddps ymm0, ymm0, ymm0
+	vmovdqu ymm1, [permps]
+	vpermps ymm0, ymm1, ymm0
+	haddps xmm0, xmm0
+	vextractps r8d, xmm0, 0
+	vextractps r9d, xmm0, 1
+	vmovd xmm0, r8d
+	vmovd xmm1, r9d
+	vaddss xmm0, xmm0, xmm1
+	dec rsi
+	jnz .loop
+
+	cvtss2sd xmm0, xmm0
+	leave
+	ret
+
+; ----------------------------------------------
+printm8x8:
+
+section .data
+	.fmt db "%.f,",9,"%.f,",9,"%.f,",9,"%.f,",9
+		 db "%.f,",9,"%.f,",9,"%.f,",9,"%.f,",10, 0
+section .text
+	push rbp
+	mov rbp, rsp
+
+	push rbx				; callee saved
+	mov rdi, .fmt
+	mov rcx, 8
+	xor rbx, rbx			; row counter
+	vzeroall
+
+.loop:
+	movss xmm0, dword[rsi+rbx]
+	cvtss2sd xmm0, xmm0
+	movss xmm1, [rsi+rbx+4]
+	cvtss2sd xmm1, xmm1
+	movss xmm2, [rsi+rbx+8]
+	cvtss2sd xmm2, xmm2
+	movss xmm3, [rsi+rbx+12]
+	cvtss2sd xmm3, xmm3
+	movss xmm4, [rsi+rbx+16]
+	cvtss2sd xmm4, xmm4
+	movss xmm5, [rsi+rbx+20]
+	cvtss2sd xmm5, xmm5
+	movss xmm6, [rsi+rbx+24]
+	cvtss2sd xmm6, xmm6
+	movss xmm7, [rsi+rbx+28]
+	cvtss2sd xmm7, xmm7
+	mov rax, 8					; 8 floats
+	push rcx
+	push rsi
+	push rdi
+
+; align stack if needed
+	xor r15, r15
+	test rsp, 0fh				; last byte is 8 (not aligned)?
+	setnz r15b					; set if not aligned
+	shl r15, 3						; substract 0 or 8
+	sub rsp, r15
+	call printf
+	add rsp, r15				; add 0 or 8
+	pop rdi
+	pop rsi
+	pop rcx
+	add rbx, 32					; next row
+	loop .loop
+
+	pop rbx						; callee saved
+	leave
+	ret

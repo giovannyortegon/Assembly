@@ -1,0 +1,5 @@
+# transpose.asm
+main: obj.o
+	gcc -o main obj.o -no-pie
+obj.o: transpose.asm
+	nasm -f elf64 -g -F dwarf transpose.asm -o obj.o
