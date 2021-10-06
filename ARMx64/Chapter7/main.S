@@ -15,9 +15,9 @@
 	.global _start
 _start:
 	openFile inFile, O_RDONLY
-	adds x11, xzr, x0				// svae file descriptor
-	b.pl nxtfill					// pos number file opened ok
-	mov x1, #1						// stdout
+	adds x11, xzr, x0					// save file descriptor
+	b.pl nxtfill						// pos number file opened ok
+	mov x1, #1							// stdout
 	ldr x2, =inpErrsz
 	ldr w2, [x2]
 	writeFile x1, inpErr, x2			// print the error
@@ -26,7 +26,7 @@ _start:
 nxtfill:
 	openFile outFile, O_CREAT+O_WRONLY
 	adds x9, xzr, x0
-	b.pl loop						// file open ok
+	b.pl loop							// file open ok
 	mov x1, #1
 	ldr x2, =outErrsz
 	ldr w2, [x2]
@@ -36,15 +36,14 @@ nxtfill:
 // loop throu file until done
 loop:
 	readFile x11, buffer, BUFFERLEN
-	mov x10, x0					// keep the length read
-	mov x1, #0					// null terminator for string
+	mov x10, x0							// keep the length read
+	mov x1, #0							// null terminator for string
 
 	// setup call to toupper and call function
-	ldr x0, =buffer				// first param for toupper
-	strb w1, [x0, x10]			// pit null at end of string
-
-	ldr x1, =outBuf
-	bl toupper
+	ldr x0, =buffer						// first param for toupper
+	strb w1, [x0, x10]					// put null at end of string
+	ldr x1, =outBuf						// second param for toupper
+	bl toupper							// call toupper
 
 	writeFile x9, outBuf, x10
 	cmp x10, #BUFFERLEN
@@ -58,7 +57,7 @@ loop:
 exit:
 	mov x0, #0
 	mov x8, #__NR_exit
-	svc 0						// call linux to terminate
+	svc 0								// call linux to terminate
 
 .data
 	inFile: .asciz "main.S"

@@ -74,15 +74,15 @@ transpose_unpack_4x4:
 
 ; unpack
 	vunpcklpd ymm12, ymm0, ymm1			; 1  5  3  7
-	vunpcklpd ymm13, ymm0, ymm1			; 2  6  4  8
+	vunpckhpd ymm13, ymm0, ymm1			; 2  6  4  8
 	vunpcklpd ymm14, ymm2, ymm3			; 9  13 11 15
-	vunpcklpd ymm15, ymm2, ymm3			; 10 14 12 16
+	vunpckhpd ymm15, ymm2, ymm3			; 10 14 12 16
 
 ; permutate
 	vperm2f128 ymm0, ymm12, ymm14, 00100000b		; 1  5  9  13
 	vperm2f128 ymm1, ymm13, ymm15, 00100000b		; 2  6  10 14
-	vperm2f128 ymm2, ymm12, ymm14, 00110000b		; 3  7  11 15
-	vperm2f128 ymm3, ymm13, ymm15, 00110000b		; 4  8  12 16
+	vperm2f128 ymm2, ymm12, ymm14, 00110001b		; 3  7  11 15
+	vperm2f128 ymm3, ymm13, ymm15, 00110001b		; 4  8  12 16
 
 ; write to memory
 	vmovapd	[rsi], ymm0
