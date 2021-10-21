@@ -11,7 +11,7 @@ section .data
 	fmt8  db 10, "This is the inverse of matrix S:", 10, 0
 	fmt9  db 10, "Proof: matrix S x inverse = ", 10, 0
 	fmt10 db 10, "This matrix is singular!", 10, 10, 0
-	aligne 32
+	align 32
 	matrixA		dq 1.,	3.,		5.,		7.
 				dq 9.,	11.,	13.,	15.
 				dq 17.,	19.,	21.,	32.
@@ -151,8 +151,9 @@ singular:
 exit:
 	leave
 	ret
-
+;--------------------------------------------------------------
 inverse4x4:
+section .data
 	align 32
 	.identity	dq	1.,		0.,		0.,		0.
 				dq	0.,		1.,		0.,		0.
@@ -171,6 +172,7 @@ section .bss
 	.matrix2	resq	16
 	.matrix3	resq	16
 	.matrix4	resq	16
+	.matrixI	resq	16
 	.mxcsr		resd	1				; used for checking zero divisor
 
 section .text
@@ -261,3 +263,153 @@ section .text
 	vbroadcastsd ymm2, xmm13	; p2
 	vbroadcastsd ymm3, xmm14	; p3
 	pop rdi						; restore the address of the origianl matrix
+
+.loop1:
+	vmovapd	ymm0, [rdi+rax]
+	vmulpd ymm0, ymm0, ymm2
+	vmovapd [.matrix1 + rax], ymm0
+	vmovapd ymm0, [.matrix2 + rax]
+	vmulpd	ymm0, ymm0, ymm1
+	vmovapd [.matrix2+rax], ymm0
+	vmovapd ymm0, [.identity+rax]
+	vmulpd ymm0, ymm0, ymm3
+	vmovapd [.matrixI+rax], ymm0
+	add rax, 32
+	loop .loop1
+
+; add the four matrices and multiply by -1/p4
+	mov rcx, [.size]
+	xor rax, rax
+; compute -1/p4
+	movsd xmm0, [.one]
+	vdivsd xmm0, xmm0, xmm15		; 1/p4
+
+; check for zero division
+	stmxcsr [.mxcsr]
+	and dword[.mxcsr], 4
+	jnz .singular
+
+; no zero division
+	pop rsi							; recall address of inverse matrix
+	vxorpd xmm0, xmm0, [.minus_mask]; -1/p4
+	vbroadcastsd ymm2, xmm0
+
+; loop through the rows
+.loop2:
+; add the rows
+	vmovapd ymm0, [.matrix1+rax]
+	vaddpd ymm0, ymm0, [.matrix2+rax]
+	vaddpd ymm0, ymm0, [.matrix3+rax]
+	vaddpd ymm0, ymm0, ymm2					; multiply the row with -1/p4
+	vmovapd [rsi+rax], ymm0
+	add rax, 32
+	loop .loop2
+	xor rax, rax							; return 0, no error
+
+	leave
+	ret
+; -------------------------------------------------------------------
+.singular:
+	mov rax, 1								; return 1, singular matrix
+	leave
+	ret
+
+; --------------------------------------------------------------------
+; trace computation
+vtrace:
+	push rbp
+	mov rbp, rsp
+
+; build the matrix in memory
+	vmovapd ymm0, [rdi]
+	vmovapd ymm1, [rdi + 32]
+	vmovapd ymm2, [rdi + 64]
+	vmovapd ymm3, [rdi + 96]
+	vblendpd ymm0, ymm0, ymm1, 0010b
+	vblendpd ymm0, ymm0, ymm2, 0100b
+	vblendpd ymm0, ymm0, ymm3, 1000b
+	vhaddpd ymm0, ymm0, ymm0
+	vpermpd ymm0, ymm0, 00100111b
+	haddpd xmm0, xmm0
+
+	leave
+	ret
+; ----------------------------------------------------------------------
+printm4x4:
+section .data
+	.fmt db "%f", 9, "%f", 9, "%f", 9, "%f", 10, 0
+
+section .text
+	push rbp
+	mov rbp, rsp
+
+	push rbx			; callee saved
+	push r15			; callee saved
+
+	mov rdi, .fmt
+	mov rcx, 4
+	xor rbx, rbx		; row counter
+
+.loop:
+	movsd xmm0, [rsi + rbx]
+	movsd xmm1, [rsi + rbx + 8]
+	movsd xmm2, [rsi + rbx + 16]
+	movsd xmm3, [rsi + rbx + 24]
+	mov rax, 4			; four floats
+	push rcx			; caller saved
+	push rsi			; caller saved
+	push rdi			; caller saved
+
+; align stack if needed
+	xor r15, r15
+	test rsp, 0xf		; last byte is 8 (not aligned)?
+	setnz r15b			; set if not aligned
+	shl r15, 3			; nultiply by 8
+	sub rsp, r15		; substract 0 or 8
+	call printf
+	add rsp, r15		; add 0 or 8 to restore rsp
+
+	pop rdi
+	pop rdi
+	pop rcx
+	add rbx, 32			; next row
+	loop .loop
+
+	pop r15
+	pop rbx
+
+	leave
+	ret
+
+; --------------------------------------------------------
+multi4x4:
+	push rbp
+	mov rbp, rsp
+
+	xor rax, rax
+	mov rcx, 4
+	vzeroall				; zero all ymm
+
+	.loop:
+	vmovapd ymm0, [rsi]
+	vbroadcastsd ymm1, [rdi+rax]
+	vfmadd231pd ymm12, ymm1, ymm0
+	vbroadcastsd ymm1, [rdi+32+rax]
+	vfmadd231pd ymm13, ymm1, ymm0
+	vbroadcastsd ymm1, [rdi+64+rax]
+	vfmadd231pd ymm14, ymm1, ymm0
+	vbroadcastsd ymm1, [rdi+96+rax]
+	vfmadd231pd ymm15, ymm1, ymm0
+	add rax, 8						; one element has 8 bytes, 64 bits
+	add rsi, 32						; every row has 32 32 bytes, 256 bits
+	loop .loop
+
+; move the result to memory, row per row
+	vmovapd [rdx], ymm12
+	vmovapd [rdx+32], ymm13
+	vmovapd [rdx+64], ymm14
+	vmovapd [rdx+96], ymm15
+	xor		rax, rax				; return value
+
+	leave
+	ret
