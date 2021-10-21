@@ -1,5 +1,5 @@
-# random_range
-main: random_range.o
-	gcc random_range.o -o main -no-pie
-random_range.o: random_range.asm
-	nasm -felf64 -g -F dwarf random_range.asm
+# use_structs.asm
+main: obj.o
+	gcc obj.o -o main -no-pie
+obj.o: use_structs.asm
+	nasm -felf64 -g -F dwarf use_structs.asm -o obj.o

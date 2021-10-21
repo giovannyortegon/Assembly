@@ -13,7 +13,7 @@ Basic Scripts about assembly language
     1. NASM Linux
     2. NASM Windows
 
-## Assembly ARM x64
+## Assembly ARM x32 - x64
 
     1. ATT&T
 	GNU Assembly

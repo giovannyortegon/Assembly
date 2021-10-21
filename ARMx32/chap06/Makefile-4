@@ -1,0 +1,5 @@
+# multiply two numbers with accumulate
+main: obj.o
+	arm-linux-gnueabihf-ld obj.o -o main
+obj.o: program6d.s
+	arm-linux-gnueabihf-as program6d.s -o obj.o
