@@ -30,7 +30,7 @@ main:
 	call reads
 
 	mov rsi, msg3		; print third message
-	mov rdx, msg3len	
+	mov rdx, msg3len
 	call prints
 
 	mov rsi, input		; print the input buffer
@@ -64,7 +64,7 @@ reads:
 ; rdx contains length of the input buffer
 	mov rax, 0			; 0 = read
 	mov rdi, 0			; 0 = stdin
-	syscall 
+	syscall
 
 	leave
 	ret
