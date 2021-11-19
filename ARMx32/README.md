@@ -48,3 +48,21 @@ $ gdb-multiarch -q --nh -ex 'set architecture arm' -ex 'file main' -ex 'target r
 ``
 (gdb) next
 ``
+### COMPILING ARM 32 WITH GNU C - Using printf
+
+can omit this command line
+``
+$ arm-linux-gnueabi-as -o first.o first.s
+``
+
+``
+$ arm-linux-gnueabi-gcc -o first first.o
+``
+
+``
+$ qemu-arm -L /usr/arm-linux-gnueabi/ ./first
+``
+
+``
+$ qemu-arm -L /usr/arm-linux-gnueabi/ ./first; echo $?
+``
