@@ -1,0 +1,5 @@
+$ arm-linux-gnueabi-as -o first.o first.s
+$ arm-linux-gnueabi-gcc -o first first.o
+
+$ qemu-arm -L /usr/arm-linux-gnueabi/ ./first
+$ qemu-arm -L /usr/arm-linux-gnueabi/ ./first; echo $?
