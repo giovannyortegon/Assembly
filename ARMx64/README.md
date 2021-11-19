@@ -84,3 +84,12 @@ $ aarch64-linux-gnu-gdb -q --nh -ex 'set architecture arm64' -ex 'file main' -ex
 ``
 (gdb) next
 ``
+### COMPILING C WITH ARM LIB
+``
+$ aarch64-linux-gnu-gcc -o main uppertst.c upper.s -static
+``
+
+### COMPILING ARM WITH GNU C - Using printf
+``
+$ aarch64-linux-gnu-gcc -o addexamp2 addexamp2.S
+``
