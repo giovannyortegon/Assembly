@@ -1,0 +1,2 @@
+main: uppertst.c upper.s
+	aarch64-linux-gnu-gcc -o main uppertst.c upper.s -static
