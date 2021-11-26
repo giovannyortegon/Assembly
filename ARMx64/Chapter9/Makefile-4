@@ -1,0 +1,17 @@
+LIBOBJS = upper.o
+DEBUGFLGS = -g
+
+all: uppertst3
+
+%.o : %.s
+	aarch64-linux-gnu-as $(DEBUGFLGS) $< -o $@
+
+libup.so.1.0: $(LIBOBJS)
+	aarch64-linux-gnu-gcc -shared -Wl,-Bdynamic,-soname,libup.so.1 -o libup.so.1.0 $(LIBOBJS)
+	mv libup.so.1.0 /usr/aarch64-linux-gnu/lib
+	ln -sf /usr/aarch64-linux-gnu/lib/libup.so.1.0 /usr/aarch64-linux-gnu/lib/libup.so.1
+	ln -sf /usr/aarch64-linux-gnu/lib/libup.so.1.0 /usr/aarch64-linux-gnu/lib/libup.so
+	ldconfig
+
+uppertst3: libup.so.1.0
+	aarch64-linux-gnu-gcc -o uppertst3 uppertst.c -lup

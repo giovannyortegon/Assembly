@@ -1,2 +1,13 @@
-addexamp2: addexamp2.S debug.S
-	aarch64-linux-gnu-gcc -o addexamp2 addexamp2.S
+LIBOBJS = upper.o
+DEBUGFLGS = -g
+
+all: uppertst3
+
+%.o : %.s
+	aarch64-linux-gnu-as $(DEBUGFLGS) $< -o $@
+
+libup.so.1.0: $(LIBOBJS)
+		aarch64-linux-gnu-gcc -shared -Wl,-soname,libup.so.1 -o libup.so.1.0 $(LIBOBJS)
+uppertst3: libup.so.1.0
+	aarch64-linux-gnu-gcc -o uppertst3 uppertst.c -lup
+

@@ -1,7 +1,7 @@
 //
 // Example of 128-Bit addition with the ADD/ADC instructions.
 //
-.include "debug.S"
+.include "debug.s"
 
 	.global main            // Provide program starting address
 							// Load the registers with some data

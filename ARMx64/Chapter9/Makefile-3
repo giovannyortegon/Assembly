@@ -1,0 +1,12 @@
+LIBOJS = upper.o
+
+all: uppertst2
+
+%.o : %.s
+	aarch64-linux-gnu-as $(DEBUGFLGS) $< -o $@
+
+libupper.a: $(LIBOJS)
+	aarch64-linux-gnu-ar -cvq libupper.a upper.o
+
+uppertst2: uppertst.c libupper.a
+	aarch64-linux-gnu-gcc -o uppertst2 uppertst.c -static libupper.a
