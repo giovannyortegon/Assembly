@@ -1,4 +1,4 @@
-/*** using ADR directive ***/
+/**** using the ADR directive ****/
 	.global _start
 _start:
 	adr r0, value
@@ -8,5 +8,4 @@ _exit:
 	mov r7, #1
 	swi 0
 
-value:
-	.word 255
+value:	.word 255

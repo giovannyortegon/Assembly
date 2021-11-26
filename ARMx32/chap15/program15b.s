@@ -1,29 +1,25 @@
-/***** Use pre-indexed addr to move chars *****/
+/**** Use pre-indexed addr to move chars ****/
+/* */
 	.global _start
 _start:
-	ldr r1, =string		// get 1st string location
-	ldr r3, =numbers	// get 2nd string location
-	mov r2, #26			// chars in alphabet
-
+	LDR R1, =string		@ Get 1st string location
+	LDR R3, =numbers	@ Get 2nd string location
+	MOV R2, #26			@ chars in alphabet
 _loop:
-	ldrb r0, [r1, r2]	// get byte at r1 + r2
-	strb r0, [r3, r2]	// save byte to r3 + r2
-	subs r2, r2, #1		// decrement and flag set
-	bpl _loop			// and loop while positive
-
+	LDRB R0, [R1, R2]
+	STRB R0, [R3, R2]
+	SUBS R2, R2, #1
+	BPL _loop
 _write:
-	mov r0, #1
-	ldr r1, =numbers
-	mov r2, #26
-	mov r7, #4
-	swi 0
-
+	MOV R0, #1			@ get byte at R1+R2
+	LDR R1, =numbers	@ save byte to R3+R2
+	MOV R2, #26			@ decrement and flag set
+	MOV R7, #4			@ and loop while positive
+	SWI 0
 _exit:
-	mov r7, #1
-	mov r0, #0
-	swi 0
-
-	.data
+	MOV R7, #1
+	SWI 0
+.data
 string:
 	.ascii "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 numbers:
