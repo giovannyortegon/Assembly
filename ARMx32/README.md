@@ -50,7 +50,6 @@ $ gdb-multiarch -q --nh -ex 'set architecture arm' -ex 'file main' -ex 'target r
 ``
 ### COMPILING ARM 32 WITH GNU C - Using printf
 
-can omit this command line
 ``
 $ arm-linux-gnueabi-as -o first.o first.s
 ``
