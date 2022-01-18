@@ -64,10 +64,10 @@ SignedMinB_ proc
 	mov eax, [ebp+8]	;eax = 'a'
 	mov ecx, [ebp+12]	;ecx = 'b'
 ; Determine smallest value using the CMOVG instruction
-	cmp eax, ecx
+	;cmp eax, ecx
 	cmovg eax, ecx		;eax = min(a, b)
 	mov ecx, [ebp+16]	;ecx = 'c'
-	cmp eax, ecx
+	;cmp eax, ecx
 	cmovg eax, ecx		;eax = min(a, b, c)
 	pop ebp
 	ret
