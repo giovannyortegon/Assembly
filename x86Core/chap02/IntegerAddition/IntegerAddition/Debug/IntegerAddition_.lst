@@ -1,0 +1,86 @@
+Microsoft (R) Macro Assembler Version 14.29.30137.0	    12/08/21 15:27:26
+IntegerAddition_.asm					     Page 1 - 1
+
+
+					.model flat,c
+
+				; These are defined in IntegerAddition.cpp
+					extern GlChar:byte
+					extern GlShort:word
+					extern GlInt:dword
+					extern GlLongLong:qword
+
+ 00000000				.code
+ 00000000			IntegerAddition_ proc
+
+				; funtion prolog
+ 00000000  55				push ebp
+ 00000001  8B EC			mov ebp, esp
+
+				; compute char += a
+ 00000003  8A 45 08			mov al, [ebp + 8]
+ 00000006  00 05 00000000 E		add [GlChar], al
+
+				; compute GlShort += b, note offset of 'b' on stack
+ 0000000C  66| 8B 45 0C			mov ax, [ebp + 12]
+ 00000010  66| 01 05			add [GlShort], ax
+	   00000000 E
+
+				; compute GlInt += c, note of 'c' on stack
+ 00000017  8B 45 10			mov eax, [ebp + 16]
+ 0000001A  01 05 00000000 E		add [GlInt], eax
+
+				; compute GlLongLong += d, note use of dword operator and adc
+ 00000020  8B 45 14			mov eax, [ebp + 20]
+ 00000023  8B 55 18			mov edx, [ebp + 24]
+ 00000026  01 05 00000000 E		add dword ptr [GlLongLong], eax
+ 0000002C  11 15 00000004 E		adc dword ptr [GlLongLong + 4], edx
+
+				; function epilog
+ 00000032  5D				pop ebp
+ 00000033  C3				ret
+
+ 00000034			IntegerAddition_ endp
+					end
+Microsoft (R) Macro Assembler Version 14.29.30137.0	    12/08/21 15:27:26
+IntegerAddition_.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000034 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+IntegerAddition_ . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000034 Public C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+GlChar . . . . . . . . . . . . .	Byte	 00000000 FLAT	External C
+GlInt  . . . . . . . . . . . . .	DWord	 00000000 FLAT	External C
+GlLongLong . . . . . . . . . . .	QWord	 00000000 FLAT	External C
+GlShort  . . . . . . . . . . . .	Word	 00000000 FLAT	External C
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,128 @@
+Microsoft (R) Macro Assembler Version 14.29.30137.0	    12/08/21 12:13:32
+MemoryAddress_.asm					     Page 1 - 1
+
+
+					.model flat, c
+				; simple  lookup table(.const section data is read only)
+
+ 00000000					.const
+ 00000000 00000000		FibVals dword 0, 1, 1, 2, 3, 5, 8, 13
+	   00000001
+	   00000001
+	   00000002
+	   00000003
+	   00000005
+	   00000008
+	   0000000D
+ 00000020  00000015				dword 21, 34, 55, 89, 144, 233, 377, 610
+	   00000022
+	   00000037
+	   00000059
+	   00000090
+	   000000E9
+	   00000179
+	   00000262
+
+ 00000040 00000010		NumFibVals_ dword($ - FibVals) / sizeof dword
+							public NumFibVals_
+
+ 00000000				.code
+ 00000000			MemoryAddress_ proc
+ 00000000  55				push ebp
+ 00000001  8B EC			mov ebp, esp
+ 00000003  53				push ebx
+ 00000004  56				push esi
+ 00000005  57				push edi
+
+				; make sure 'i' is valid
+ 00000006  33 C0			xor eax, eax
+ 00000008  8B 4D 08			mov ecx, [ebp + 8]
+ 0000000B  83 F9 00			cmp ecx, 0
+ 0000000E  7C 55			jl InvalidIndex
+ 00000010  3B 0D 00000040 R		cmp ecx, [NumFibVals_]
+ 00000016  7D 4D			jge InvalidIndex
+
+				; Example #1 - base register
+ 00000018  BB 00000000 R		mov ebx, offset FibVals
+ 0000001D  8B 75 08			mov esi, [ebp + 8]
+ 00000020  C1 E6 02			shl esi, 2
+ 00000023  03 DE			add ebx, esi
+ 00000025  8B 03			mov eax, [ebx]
+ 00000027  8B 7D 0C			mov edi, [ebp + 12]
+ 0000002A  89 07			mov [edi], eax
+
+				; Example #2 - base register + displacement
+				; esi is used as the base register
+ 0000002C  8B 75 08			mov esi, [ebp + 8]
+ 0000002F  C1 E6 02			shl esi, 2
+ 00000032  8B 86 00000000 R		mov eax, [esi + FibVals]
+ 00000038  8B 7D 10			mov edi, [ebp + 16]
+ 0000003B  89 07			mov [edi], eax
+
+				; Example #3 - base register + index register
+ 0000003D  BB 00000000 R		mov ebx, offset FibVals
+ 00000042  8B 75 08			mov esi, [ebp + 8]
+ 00000045  C1 E6 02			shl esi, 2
+ 00000048  8B 04 33			mov eax, [ebx + esi]
+ 0000004B  8B 7D 14			mov edi, [ebp + 20]
+ 0000004E  89 07			mov [edi], eax
+
+				; Example #4 - base register + index register
+ 00000050  BB 00000000 R		mov ebx, offset FibVals
+ 00000055  8B 75 08			mov esi, [ebp + 8]
+ 00000058  8B 04 B3			mov eax, [ebx + esi * 4]
+ 0000005B  8B 7D 18			mov edi, [ebp + 24]
+ 0000005E  89 07			mov [edi], eax
+ 00000060  B8 00000001			mov eax, 1
+
+ 00000065			InvalidIndex:
+ 00000065  5F				pop edi
+ 00000066  5E				pop esi
+ 00000067  5B				pop ebx
+ 00000068  5D				pop ebp
+ 00000069  C3				ret
+
+ 0000006A			MemoryAddress_ endp
+					end
+Microsoft (R) Macro Assembler Version 14.29.30137.0	    12/08/21 12:13:32
+MemoryAddress_.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 00000044 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000006A Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+MemoryAddress_ . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000006A Public C
+  InvalidIndex . . . . . . . . .	L Near	 00000065 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+FibVals  . . . . . . . . . . . .	DWord	 00000000 CONST	
+NumFibVals_  . . . . . . . . . .	DWord	 00000040 CONST	Public C
+
+	   0 Warnings
+	   0 Errors

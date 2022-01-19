@@ -1,0 +1,83 @@
+Microsoft (R) Macro Assembler Version 14.29.30137.0	    11/23/21 22:49:05
+IntegerMulDiv_.asm					     Page 1 - 1
+
+
+				.model flat, c
+ 00000000			.code
+
+ 00000000			IntegerMulDiv_ proc
+				; prologe function
+ 00000000  55			    push ebp
+ 00000001  8B EC		    mov ebp, esp
+ 00000003  53			    push ebx
+
+				; make sure the divisor Is Not zero
+ 00000004  33 C0		    Xor eax, eax
+ 00000006  8B 4D 08		    mov ecx, [ebp + 8]              ; ecx = a
+ 00000009  8B 55 0C		    mov edx, [ebp + 12]             ; edx = b
+ 0000000C  0B D2		    Or edx, edx
+ 0000000E  74 1D		    jz InvalidDivisor               ; jump If b Is zero
+
+				;Calculate product And save result
+ 00000010  0F AF D1		    imul edx, ecx                   ; edx = a * b
+ 00000013  8B 5D 10		    mov ebx, [ebp + 16]             ; ebx = prod
+ 00000016  89 13		    mov [ebx], edx                  ; save product
+
+				; Calculate quotient And ramainder, save resutls
+ 00000018  8B C1		    mov eax, ecx                    ; eax = a
+ 0000001A  99			    cdq                             ; edx:eax contains dividend
+ 0000001B  F7 7D 0C		    idiv dword ptr [ebp + 12]       ; eax, = quo, edx = REM
+
+ 0000001E  8B 5D 14		    mov ebx, [ebp + 20]             ; ebx = quo
+ 00000021  89 03		    mov [ebx], eax                  ; save quotient
+ 00000023  8B 5D 18		    mov ebx, [ebp + 24]             ; ebx = REM
+ 00000026  89 13		    mov [ebx], edx                  ; save remainder
+ 00000028  B8 00000001		    mov eax, 1                      ; set success return code
+
+				; function epilog
+ 0000002D			InvalidDivisor:
+ 0000002D  5B			    pop ebx
+ 0000002E  5D			    pop ebp
+ 0000002F  C3			ret
+
+ 00000030			IntegerMulDiv_ endp
+				End
+Microsoft (R) Macro Assembler Version 14.29.30137.0	    11/23/21 22:49:05
+IntegerMulDiv_.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000030 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+IntegerMulDiv_ . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000030 Public C
+  InvalidDivisor . . . . . . . .	L Near	 0000002D _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   0 Warnings
+	   0 Errors
