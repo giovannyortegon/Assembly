@@ -1,0 +1,8 @@
+# COMPILE
+ml64 main.asm /link /SUBSYSTEM:CONSOLE ENTRY:main
+
+# show ExitProccess
+echo %errorlevel%
+
+# powershell
+$lastexitcode
