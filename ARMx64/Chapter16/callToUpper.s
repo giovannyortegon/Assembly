@@ -15,7 +15,7 @@ DownloadCreditCardNumbers:
     mov x8, #64                 // Linux write system call
     svc 0
 
-    RETFL
+    ret
 
 callToUpper:
     str lr, [sp, #-16]          // put LR on stack
@@ -39,7 +39,7 @@ _start:
     svc 0                       // call linux to terminate the program
 
     .data
-instr   .ascii "This is out Test"   // correct length string
+instr:  .ascii "This is out Test"   // correct length string
         .dword 0x00000000004000b0   // overwrite for lr
 getcreditcards:
         .asciz "Downloading Credit Card Data!\n"
