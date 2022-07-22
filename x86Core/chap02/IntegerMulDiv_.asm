@@ -1,32 +1,53 @@
-; IntegerMulDiv_.asm
-section .text
-	global IntegerMulDiv_
-IntegerMulDiv_:
+	.model flat, c
+	.code
+; Returns:		0 Error
+;				1 Success
+;
+; Computes:		* prod = a * b
+;				* quo = a / b
+;				* rem = a % b
+;
+; Arguments:
+;				ebp + 8 = a
+;				ebp + 12 = b
+;				ebp + 16 = prod
+;				ebp + 20 = quo
+;				ebp + 24 = rem
+; 
+IntegerMulDiv_ proc
+	; prologo
 	push ebp
 	mov ebp, esp
 	push ebx
 
+;make sure the divisor is not zero
 	xor eax, eax
-	mov ecx, [ebp + 8]
-	mov edx, [ebp + 12]
+	mov ecx, [ebp+8]			; ecx = a
+	mov edx, [ebp+12]			; edx = b
 	or edx, edx
-	jz InvalidDivisor
+	jz InvalidDivisor			; jump if b is zero
 
-	imul edx, ecx
-	mov ebx, [ebp + 16]
-	mov [ebx], edx
+; calculate product and save result
+	imul edx, ecx				; edx = a * b
+	mov ebx, [ebp+16]			; ebx = prod
+	mov [ebx], edx				; save prod
 
-	mov eax, ecx
-	cdq
-	idiv dword [ebp+12]
+; calculate quotient and remainder, save result
+	mov eax, ecx				; eax = a
+	cdq							; edx:eax contains dividend
+	idiv dword ptr [ebp+12]		; eax = quo, edx = rm
 
-	mov ebx, [ebp + 20]
-	mov [ebx], eax
-	mov ebx, [ebp + 24]
-	mov [ebx], edx
-	mov eax, 1
+	mov ebx, [ebp + 20]			; ebx = quo
+	mov [ebx], eax				; save quotient
+	mov ebx, [ebp+24]			; ebx = rem
+	mov [ebx], edx				; save remainder
+	mov eax, 1					; set success return code
 
+	; epilog
 InvalidDivisor:
 	pop ebx
 	pop ebp
 	ret
+
+IntegerMulDiv_ endp
+	end
