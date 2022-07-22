@@ -3,67 +3,79 @@ GetStdHandle    proto
 WriteConsoleA   proto
 ReadConsoleA    proto
 ExitProcess     proto
-Console         equ     -11
-Keyboard        equ     -10
-MaxBuf          equ     20
+Console         equ         -11
+Keyboard        equ         -10
+MaxBuf          equ         20
+
     .code
 main proc
-    sub rsp, 40             ; reserve 'shadow space'
+    sub rsp, 40
 
-; Obtain "handle" for console I/O streams
-    ; console standard output handle
     mov rcx, Console
     call GetStdHandle
     mov stdout, rax
-    ; console standard input handle
+
     mov rcx, Keyboard
     call GetStdHandle
     mov stdin, rax
 
-; Display the prompt message.
 nxtlin:
+; Display message to input message
     mov rcx, stdout
     lea rdx, msg
     mov r8, lengthof msg
     lea r9, nbwr
     call WriteConsoleA
 
-; Read input line from user keyboard
+; Read input from user keyborad
     mov rcx, stdin
     lea rdx, keymsg
     mov r8, MaxBuf
     lea r9, nbrd
     call ReadConsoleA
 
-; Echo the message input back to the user
-    mov rcx, stdout
-    lea rdx, keymsg
-    mov r8, nbrd            ; length number bytes of input message
-    lea r9, nbwr            ; number of bytes actually written
-    call WriteConsoleA
+; Echo line just input back to the user onw character at a time
+    lea r12, keymsg
+    mov r13, nbrd
 
-; Go get another linem but exit if only "Enter" key was input
-    mov r8, nbrd
-    cmp r8, 2
-    jg nxtlin
-
+    mov r14, MaxBuf
+    cmp r14, nbrd
+    jge Exit
+; Print each character of input console
+inloop:
     mov rcx, stdout
-    lea rdx, exitmsg
-    mov r8, lengthof exitmsg
+    mov rdx, r12
+    mov r8, 1
     lea r9, nbwr
     call WriteConsoleA
 
+    mov rcx, stdout
+    lea rdx, newln
+    mov r8, 2
+    lea r9, nbwr
+    call WriteConsoleA
+
+    inc r12
+    dec r13
+
+    jg inloop
+
+; Go get another line
+    mov r8, nbrd
+    cmp r8, 2
+    jg nxtlin
+Exit:
     add rsp, 40             ; restore "shadow space"
 
-; Exit
+; exit
     mov rcx, 0
     call ExitProcess
 
 main endp
     .data
-msg byte "Please enter text message: "
-exitmsg byte "Hasta la proxima ..."
+msg byte "Please enter text message: ",0ah
 keymsg byte MaxBuf dup (?)
+newln byte 0dh,0ah
 stdout qword ?
 nbwr qword ?
 stdin qword ?
