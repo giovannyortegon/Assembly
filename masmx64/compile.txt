@@ -1,8 +1,26 @@
 # COMPILE
-ml64 main.asm /link /SUBSYSTEM:CONSOLE ENTRY:main
+ml64 main.asm /link /SUBSYSTEM:CONSOLE /ENTRY:main
 
 # show ExitProccess
 echo %errorlevel%
 
 # powershell
 $lastexitcode
+
+---------------------------------------------------------
+# Assembly and link separate files
+ml64 /c main.asm otherFile.asm 
+or 
+ml64 /c main.asm
+ml64 /c otherFile.asm
+link /out:main.exe main.obj v_asc.obj /entry:main
+---------------------------------------------------------
+# Create a Library
+Add Library
+    includelib user.Lib
+
+# Assembly
+ml64 /c v_asc.asm
+lib /out:user.lib  /verbose v_asc.obj
+ml64 main.asm /link /SUBSYSTEM:CONSOLE /ENTRY:main
+----------------------------------------------------------
