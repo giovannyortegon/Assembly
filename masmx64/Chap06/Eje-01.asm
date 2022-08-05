@@ -1,4 +1,5 @@
     includelib ..\\Lib\\Kernel32.Lib
+    includelib user.lib
 GetStdHandle    proto
 ReadConsoleA    proto
 ExitProcess     proto
