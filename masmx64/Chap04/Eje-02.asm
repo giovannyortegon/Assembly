@@ -57,7 +57,6 @@ inloop:
 
     inc r12
     dec r13
-
     jg inloop
 
 ; Go get another line
