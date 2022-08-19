@@ -1,35 +1,36 @@
-#include <iostream>
-#include <tchar.h>
+#include<stdio.h>
+#include<tchar.h>
+#include<string>
 
-extern "C" int CountChars_(wchar_t * s, wchar_t c);
+extern "C" int CountChars_(const wchar_t *, wchar_t);
+
+using namespace std::string_literals;
 
 int _tmain(int argc, _TCHAR * argv[])
 {
 	wchar_t c;
-	wchar_t * s;
-	
-	s = (wchar_t*)L"Four score and seven seconds ago, ...";
 
-	wprintf(L"\nTest string: %s\n", s);
+	const wchar_t * str1 = L"Four score and seven seconds ago, ...";
+	wprintf(L"\nTest string: %s\n", str1);
 	c = L's';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str1, c));
 	c = L'F';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str1, c));
 	c = L'o';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str1, c));
 	c = L'z';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str1, c));
 
-	s = (wchar_t*)L"Red Green Blue Cyan Magenta Yellow";
-	wprintf(L"\nTest string: %s\n", s);
+	const wchar_t * str2 = L"Red Green Blue Cyan Magenta Yellow";
+	wprintf(L"\nTest string: %s\n", str2);
 	c = L'e';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str2, c));
 	c = L'w';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str2, c));
 	c = L'Q';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str2, c));
 	c = L'l';
-	wprintf(L"Search Char: %c Count: %d\n", c, CountChars_(s, c));
+	wprintf(L"\tSearchChar: %c Count: %d\n", c, CountChars_(str2, c));
 
 	return (0);
 }
