@@ -1,0 +1,26 @@
+Command failed: nasm -f win32 c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:1: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:2: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:3: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:4: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:7: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:8: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:9: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:13: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:15: error: comma, colon, decorator or end of line expected after operand
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:17: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:19: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:20: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:31: error: symbol `msgOut' redefined
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:31: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:47: error: symbol `msgOut' redefined
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:47: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:64: error: symbol `main' redefined
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:64: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:65: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:66: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:67: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:68: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:69: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:70: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap06\Eje-01.asm:71: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
