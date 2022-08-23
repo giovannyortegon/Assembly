@@ -1,0 +1,11 @@
+Command failed: nasm -f win32 c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:5: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:6: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:7: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:10: error: impossible combination of address sizes
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:10: error: invalid effective address
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:36: error: symbol `v_bn1' redefined
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:36: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:37: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:38: error: parser: instruction expected
+c:\Users\Pentester\Documents\Assembly\masmx64\Chap07\v_bin1.asm:39: warning: label alone on a line without a colon might be in error [-w+orphan-labels]
