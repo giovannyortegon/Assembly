@@ -1,4 +1,4 @@
-.model flat,c
+	.model flat, c
 	.code
 
 CalcArraySquares_ proc
@@ -10,27 +10,26 @@ CalcArraySquares_ proc
 	push edi
 
 ; Load arguments
-	mov edi, [ebp+8]		; edi = 'y'
-	mov esi, [ebp+12]		; esi = 'x'
-	mov ecx, [ebp+16]		; ecx = 'n'
-; Initialize array sum register
-	xor eax, eax			; eax = 'sum'
+	mov edi, [ebp + 8]					; y array empty
+	mov esi, [ebp + 12]					; x array
+	mov ecx, [ebp + 16]					; n
 
-; calculate size of array in byte
+; Initialize array sum registers, calculate size of array in bytes
+	xor eax, eax
 	cmp ecx, 0
 	jle EmptyArray
-	shl ecx, 2				; ecx = size of array in bytes
-	xor ebx, ebx			; ebx = array element offset
+	shl ecx, 2							; ecx = size of array in bytes
+	xor ebx, ebx
 
-; go through array with a loop
-; repeat loop until finished
-@@:	mov edx, [esi + ebx]	; load next x[i]
-	imul edx, edx			; compute x[i] * x[i]
-	mov [edi + ebx], edx	; save result to y[i]
-	add eax, edx			; update array element offset
-	add ebx, 4
+; Reapet loop until finished
+@@:
+	mov edx, [esi+ebx]					; x array
+	imul edx, edx						; square x
+	mov [edi + ebx], edx				; save square x in y
+	add eax, edx						; sum array
+	add ebx, 4							; add to index for next element
 	cmp ebx, ecx
-	jl @B					; jump if not finished
+	jl @B								; jump if not finished
 
 EmptyArray:
 	pop edi
