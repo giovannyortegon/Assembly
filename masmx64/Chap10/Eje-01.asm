@@ -1,4 +1,4 @@
-    includelib ..\\Lib\\Kernel32.lib
+    includelib ..\\Lib\\Kernel32.Lib
 GetStdHandle    proto
 WriteConsoleA   proto
 ReadConsoleA    proto
@@ -10,7 +10,7 @@ MaxBuf          equ     40
 ;  Macro    "txtOut msg nchar"  display a character string
 ;               msg:            Address of ASCII message
 ;               nchar:          Address of message length
-
+    .code
 txtOut  macro   msg, nchar
     mov rcx, stdout
     lea rdx, msg
@@ -30,7 +30,7 @@ main    proc
     mov rcx, Console
     call GetStdHandle
     mov stdout, rax
-
+    mov rcx, keyboard
     call GetStdHandle
     mov stdin, rax
 
