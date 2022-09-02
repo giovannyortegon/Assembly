@@ -8,7 +8,7 @@
 
     .text
     .cpu cortex-a72
-    .global
+    .global SumCubes_
 SumCubes_:
     push {r4, r5}
 

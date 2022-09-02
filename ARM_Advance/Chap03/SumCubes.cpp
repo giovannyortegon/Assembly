@@ -1,11 +1,11 @@
 #include<iostream>
 #include<iomanip>
 
-using namespace std;
-
 extern "C" int SumCubes_(unsigned char, short, int, int, signed char, short, unsigned char, unsigned short, int);
 int SumCubes(unsigned char, short, int, int, signed char, short, unsigned char, unsigned short, int);
 void PrintResult(const char *,unsigned char, short, int, int, signed char, short, unsigned char, unsigned short, int, int, int);
+
+using namespace std;
 
 int main() {
     unsigned char a;
