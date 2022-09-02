@@ -28,12 +28,12 @@ void PrintResult(const char * msg, int a, int b, int c, int d, int e, int f, int
 
     cout <<msg <<nl;
     cout <<"a = " <<a <<nl;
-    cout <<"b = " <<a <<nl;
-    cout <<"c = " <<a <<nl;
-    cout <<"d = " <<a <<nl;
-    cout <<"e = " <<a <<nl;
-    cout <<"f = " <<a <<nl;
-    cout <<"g = " <<a <<nl;
+    cout <<"b = " <<b <<nl;
+    cout <<"c = " <<c <<nl;
+    cout <<"d = " <<d <<nl;
+    cout <<"e = " <<e <<nl;
+    cout <<"f = " <<f <<nl;
+    cout <<"g = " <<g <<nl;
     cout <<"sum = " <<sum <<nl;
     cout <<nl;
 
