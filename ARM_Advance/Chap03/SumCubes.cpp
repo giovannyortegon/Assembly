@@ -39,7 +39,7 @@ int main() {
     return (0);
 }
 
-int SumCubes_(unsigned char a, short b, int c, int d, signed char e, short f, unsigned char g, unsigned short h, int i) {
+int SumCubes(unsigned char a, short b, int c, int d, signed char e, short f, unsigned char g, unsigned short h, int i) {
     int aa = (int) a * a * a;
     int bb = (int) b * b * b; 
     int cc = c * c * c;
