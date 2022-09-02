@@ -5,6 +5,7 @@
 .equ ARG_G, 8
 
     .text
+    .cpu cortex-a72
     .global SumSquares_
 SumSquares_:
     mul r0, r0, r0      // r0 = a * a
