@@ -27,13 +27,13 @@ void PrintResult(const char * msg, int a, int b, int c, int d, int e, int f, int
     const char * sep = " | ";
 
     cout <<msg <<nl;
-    cout <<"a = " <<a <<nl;
-    cout <<"b = " <<b <<nl;
-    cout <<"c = " <<c <<nl;
+    cout <<"a = " <<a <<sep;
+    cout <<"b = " <<b <<sep;
+    cout <<"c = " <<c <<sep;
     cout <<"d = " <<d <<nl;
-    cout <<"e = " <<e <<nl;
-    cout <<"f = " <<f <<nl;
-    cout <<"g = " <<g <<nl;
+    cout <<"e = " <<e <<sep;
+    cout <<"f = " <<f <<sep;
+    cout <<"g = " <<g <<sep;
     cout <<"sum = " <<sum <<nl;
     cout <<nl;
 
