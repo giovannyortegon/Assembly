@@ -1,7 +1,7 @@
 #include<iostream>
 
 extern "C" int SumSquares_(int ,int , int , int , int, int, int);
-void PrintResult(const char *, int, int, int, int, int, int, int);
+void PrintResult(const char *, int, int, int, int, int, int, int, int);
 
 using namespace std;
 
