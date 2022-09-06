@@ -51,12 +51,13 @@ nxtlin:
     xor r13, qword ptr[cvt]
     mov keymsg, r13
     txtOut keymsg, nbrd
-
+	txtOut nl, lengthof nl
+	
 ; Convert to lower case and echo again
     or r13, qword ptr [cvt]     ; convert to lower case
     mov keymsg, r13             ; Overlay start of mesage
-    txtOut keymsg, nbrd         ; Display whole message
-
+    txtOut keymsg, nbrd        ; Display whole message
+	txtOut nl, lengthof nl
 ; Go get another line, but exit if only "Enter" key was input.
     mov r8, nbrd                ; Length (byte) of input message
     cmp r8, 2                   ; Test if only CR and LF characters
@@ -77,4 +78,5 @@ stdin   qword ?
 nbrd    qword ?
 keymsg  qword MaxBuf dup (?)
 cvt     byte  8 dup(20h)
+nl		byte 0dh,0ah
     end
