@@ -23,7 +23,7 @@ LocalVarsA_:
     ldr r7, [sp, #ARG_H]        // r7 = h (pointer)
 
 // calculate and save temp0, temp1, temp2 and temp3
-    add r12, r0, r12
+    add r12, r0, r1
     add r12, r12, r12
     str r12, [sp, #TEMP0]
 
@@ -31,7 +31,7 @@ LocalVarsA_:
     add r12, r12,r5
     str r12, [sp, #TEMP1]
 
-    add r12, r0, r12
+    add r12, r0, r2
     add r12, r12, r4
     str r12, [sp, #TEMP2]
 
