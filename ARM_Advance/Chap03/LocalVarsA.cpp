@@ -52,6 +52,6 @@ void LocalVarsA(int a, int b, int c, int d, int e, int f, int *g, int *h) {
     int temp2 = a + c + e;
     int temp3 = b + d + f;
 
-    * g = temp0 + temp1;
-    * h = temp2 + temp3;
+    * g = temp0 * temp1;
+    * h = temp2 * temp3;
 }
