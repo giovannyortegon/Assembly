@@ -24,7 +24,7 @@ LocalVarsA_:
 
 // calculate and save temp0, temp1, temp2 and temp3
     add r12, r0, r1
-    add r12, r12, r12
+    add r12, r12, r2
     str r12, [sp, #TEMP0]
 
     add r12, r3, r4
@@ -36,7 +36,7 @@ LocalVarsA_:
     str r12, [sp, #TEMP2]
 
     add r12, r1, r3
-    add r12, r12, r4
+    add r12, r12, r5
     str r12, [sp, #TEMP3]
 
 // Calculate and save g and h
