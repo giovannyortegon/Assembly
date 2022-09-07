@@ -1,11 +1,11 @@
 #include <iostream>
 #include <iomanip>
 
-using namespace std;
-
 extern "C" void LocalVarsA_(int, int, int, int, int, int, int *, int *);
 void LocalVarsA(int, int, int, int, int, int, int *, int *);
 void PrintResult(const char *, int, int, int, int, int, int, int, int, int, int);
+
+using namespace std;
 
 int main() {
     int a, b, c, d, e, f, g1, g2, h1, h2;
