@@ -10,6 +10,7 @@
     .equ TEMP3, -4
 
     .text
+    .cpu cortex-a72
     .global LocalVarsB_
 LocalVarsB_:
     // Function prologue
