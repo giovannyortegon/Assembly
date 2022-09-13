@@ -1,4 +1,4 @@
-; extern "C" void LocalVarsB_(int a, int b, int c, int d, int e, int f, int * g, int * h);
+// extern "C" void LocalVarsB_(int a, int b, int c, int d, int e, int f, int * g, int * h);
     .equ ARG_E, 24
     .equ ARG_F, 28
     .equ ARG_G, 32
