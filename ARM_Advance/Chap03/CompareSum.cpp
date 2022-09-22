@@ -89,11 +89,11 @@ void CompareSumC(void) {
     result = CompareSumC_(a, b, c, &sum);
     PrintResult("CompareSumC - Test Case #3", a, b, c, sum, result);
 
-    a = 0x8ffffff0; b = -5; c = -10;
+    a = 0x8000000f; b = -5; c = -10;
     result = CompareSumC_(a, b, c, &sum);
     PrintResult("CompareSumC - Test Case #4", a, b, c, sum, result);
 
-    a = 0x8ffffff0; b = 100; c = -200;
+    a = 0x8000000f; b = 100; c = -200;
     result = CompareSumC_(a, b, c, &sum);
     PrintResult("CompareSumC - Test Case #5", a, b, c, sum, result);
 
