@@ -30,8 +30,8 @@ void PrintResult(const char * msg, int a, int b, int c, int sum, bool result) {
 
     std::cout <<msg <<nl;
     std::cout <<"a = "<< a <<sep;
-    std::cout <<"b = "<< a <<sep;
-    std::cout <<"c = "<< a <<sep;
+    std::cout <<"b = "<< b <<sep;
+    std::cout <<"c = "<< c <<sep;
     std::cout <<"sum = " <<sum <<sep;
     std::cout <<"result = " << std::boolalpha <<result <<nl <<nl;
 
