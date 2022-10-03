@@ -7,6 +7,7 @@
     .equ ARG_N_MAX, 1023
 
     .text
+    .cpu cortex-a72
     .global CalcSum_
 CalcSum_:
 // Prologue
