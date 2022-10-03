@@ -28,7 +28,7 @@ CalcSum_:
     blt Done
     mov r3, #ARG_N_MAX
     cmp r0, r3
-    bgt Done:
+    bgt Done
 
 // Calculate sum1
     bl CalcSum1_
