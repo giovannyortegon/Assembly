@@ -1,10 +1,11 @@
 #include<iostream>
+#include"PrintResult.h"
 
 const int c_ArgnMin = 1;
 const int c_ArgnMax = 1023;
 
 extern "C" void CalcSum_(int, int *, int *);
-extern void PrintResult(const char *, int, int, int, int, int);
+// extern void PrintResult(const char *, int, int, int, int, int);
 void CalcSum(int n, int * sum1, int * sum2);
 static int CalcSum1(int n);
 static int CalcSum2(int n);
@@ -19,17 +20,17 @@ int main(int argc, char **argv) {
     CalcSum_(n, &sum1_asm, &sum2_asm);
     PrintResult("CalcSum - Test Case #1", n, sum1_cpp, sum1_asm, sum2_cpp, sum2_asm);
     
-    n = 3;
+    n = 7;
     CalcSum(n, &sum1_cpp, &sum2_cpp);
     CalcSum_(n, &sum1_asm, &sum2_asm);
     PrintResult("CalcSum - Test Case #2", n, sum1_cpp, sum1_asm, sum2_cpp, sum2_asm);
 
-    n = 3;
+    n = 17;
     CalcSum(n, &sum1_cpp, &sum2_cpp);
     CalcSum_(n, &sum1_asm, &sum2_asm);
     PrintResult("CalcSum - Test Case #3", n, sum1_cpp, sum1_asm, sum2_cpp, sum2_asm);
 
-    n = 3;
+    n = 40;
     CalcSum(n, &sum1_cpp, &sum2_cpp);
     CalcSum_(n, &sum1_asm, &sum2_asm);
     PrintResult("CalcSum - Test Case #4", n, sum1_cpp, sum1_asm, sum2_cpp, sum2_asm);

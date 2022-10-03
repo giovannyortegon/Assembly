@@ -39,7 +39,7 @@ CalcSum_:
 // Calculate sum2
     ldr r0, [sp, #SAVE_N]
     bl CalcSum2_
-    ldr r0, [sp, #SAVE_SUM2]
+    ldr r1, [sp, #SAVE_SUM2]
     str r0, [r1]
 
 Done:
