@@ -11,7 +11,7 @@ uint64_t CalcSumB(const uint32_t *, uint32_t);
 int main() {
     const char nl = '\n';
     int x[] {3, 17, -13, 25, -2, 9, -6, 12, 88, -19};
-    int nx = sizeof(x) / sizeof(x);
+    int nx = sizeof(x) / sizeof(int);
 
     uint32_t y[] = {0x10000000, 0x20000000, 0x40000000, 0x80000000,
                     0x50000000, 0x70000000, 0x90000000, 0xc0000000};
