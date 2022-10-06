@@ -42,7 +42,7 @@ int main() {
 
     return (0);
 }
-
+// Calculate SUm from C++ Function
 int CalcSumA(const int * x, int n) {
     int sum = 0;
 
