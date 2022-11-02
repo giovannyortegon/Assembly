@@ -66,4 +66,3 @@ int32_t CalcZ(int32_t * z, const int8_t * x, const int16_t * y, int32_t n) {
         z[i] = temp;
     }
 }
-
