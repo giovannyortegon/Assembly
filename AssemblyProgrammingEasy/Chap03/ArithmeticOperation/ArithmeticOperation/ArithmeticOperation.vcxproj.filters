@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <MASM Include="Source.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="v.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{20e1ac6e-1da2-461a-96f1-9c92d58ed346}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
