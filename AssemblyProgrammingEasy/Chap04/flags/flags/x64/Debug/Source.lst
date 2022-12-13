@@ -1,0 +1,35 @@
+Microsoft (R) Macro Assembler (x64) Version 14.34.31935.0   12/12/22 22:36:49
+Source.asm						     Page 1 - 1
+
+
+					includelib kernel32.lib
+				ExitProcess PROTO
+ 00000000				.data
+
+ 00000000				.code
+ 00000000			main proc
+ 00000000  48/ 33 C9			xor rcx, rcx
+
+ 00000003  B1 FF			mov cl, 255
+ 00000005  80 C1 01			add cl, 1
+ 00000008  B1 7F			mov cl, 127
+ 0000000A  80 C1 01			add cl, 1
+
+ 0000000D  E8 00000000 E		call ExitProcess
+ 00000012			main endp
+					end
+Microsoft (R) Macro Assembler (x64) Version 14.34.31935.0   12/12/22 22:36:49
+Source.asm						     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000012 Public
+
+	   0 Warnings
+	   0 Errors

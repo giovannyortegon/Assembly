@@ -1,4 +1,4 @@
-	includelib kernel32.lib
+	includelib ..\Lib\kernel32.lib
 
 GetStdHandle    proto
 WriteConsoleA   proto
