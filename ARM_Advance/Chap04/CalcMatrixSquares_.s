@@ -1,3 +1,4 @@
+
 //  extern "C" void CalcMatrixSquares_(int * y, const int * x, int m, int n)
 //  r0: y1 o y2
 //  r1: x
