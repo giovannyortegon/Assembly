@@ -6,6 +6,7 @@
 //  r3: n
 
     .text
+    .cpu cortex-a72
     .global CalcMatrixSquares_
 CalcMatrixSquares_:
     push {r4-r8}
