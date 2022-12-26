@@ -32,7 +32,7 @@ loop2:
     mov r8, r4                  // r8 = i
     mul r8, r8, r3              // r8 = i * n
     add r8, r8, r5              // ky = i * m + j
-    str r7, [r1, r8, lsl #2]    // save y[ky] y[i][j]
+    str r7, [r0, r8, lsl #2]    // save y[ky] y[i][j]
 
     add r5, #1                  // j += 1
     cmp r5, r3
