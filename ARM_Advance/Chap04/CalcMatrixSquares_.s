@@ -3,6 +3,7 @@
 //  r1: x
 //  r2: m
 //  r3: n
+
     .text
     .global CalcMatrixSquares_
 CalcMatrixSquares_:
