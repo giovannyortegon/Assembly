@@ -26,9 +26,14 @@ int main() {
             std::cout <<std::setw(6) <<y2[i][j] <<" ";
 
             std::cout <<"x[" <<std::setw(2) <<i <<"][" <<std::setw(2) <<j <<"] = ";
-            std::cout <<std::setw(6) <<y1[i][j] <<" ";
+            std::cout <<std::setw(6) <<x[i][j] <<" ";
+
+            if (y1[i][j] != y2[i][j])
+                std::cout <<"Compare failed!\n";
         }
     }
+
+    return (0);
 }
 
 void CalcMatrixSquares(int * y, const int * x, int m, int n) {
