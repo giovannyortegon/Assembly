@@ -3,7 +3,7 @@ scanf_fmt: db  "%ld", 0
 ;num resq 1
 
 ; node struct
-struc node
+struct node
     n_value resq 1
     n_next  resq 1
     alignb  8

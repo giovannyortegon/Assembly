@@ -1,0 +1,65 @@
+Microsoft (R) Macro Assembler (x64) Version 14.34.31935.0   12/21/22 17:27:01
+Source.asm						     Page 1 - 1
+
+
+					includelib kernel32.lib
+				ExitProcess PROTO
+ 00000000				.data
+
+ 00000000				.code
+ 00000000			main proc
+ 00000000  48/ 33 D2			xor rdx, rdx
+ 00000003  B1 FF			mov cl, 255
+ 00000005  80 C1 01			add cl, 1
+ 00000008  72 07			jc carry
+ 0000000A  48/ C7 C2			mov rdx, 1
+	   00000001
+
+ 00000011			carry:
+ 00000011  B1 80			mov cl, -128
+ 00000013  80 E9 01			sub cl, 1
+ 00000016  70 07			jo overflow
+ 00000018  48/ C7 C2			mov rdx, 2
+	   00000002
+
+ 0000001F			overflow:
+ 0000001F  B1 FF			mov cl, 255
+ 00000021  80 E1 80			and cl, 10000000b
+ 00000024  78 07			js sign
+ 00000026  48/ C7 C2			mov rdx, 3
+	   00000003
+
+ 0000002D			sign:
+ 0000002D  75 07			jnz notZero
+ 0000002F  48/ C7 C2			mov rdx, 4
+	   00000004
+
+ 00000036			notZero:
+ 00000036  E8 00000000 E		call ExitProcess
+ 0000003B			main endp
+					end
+Microsoft (R) Macro Assembler (x64) Version 14.34.31935.0   12/21/22 17:27:01
+Source.asm						     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000003B Public
+  carry  . . . . . . . . . . . .	L 	 00000011 _TEXT	
+  overflow . . . . . . . . . . .	L 	 0000001F _TEXT	
+  sign . . . . . . . . . . . . .	L 	 0000002D _TEXT	
+  notZero  . . . . . . . . . . .	L 	 00000036 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+
+	   0 Warnings
+	   0 Errors
