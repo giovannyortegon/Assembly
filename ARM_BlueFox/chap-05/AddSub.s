@@ -19,6 +19,8 @@ _start:
     add r4, r1, r2, lsl r3
     sub r4, r1, r2, lsl r3
 
+    mov r0, r4
+
     eor r0, r0
     mov r7, #1
     swi 0
