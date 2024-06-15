@@ -26,6 +26,9 @@ with main
 
 ``
 $ gcc -m32 -g -o file file.o
+``
+
+``
 $ ld -m elf_i386 -s -o <name execute> <object file .o>
 ``
 
@@ -33,7 +36,9 @@ only 32bits assembly
 
 ``
 $ nasm -f elf -F dwarf -g file.asm
+``
 
+``
 $ ld -m elf_i386 -o file file.o
 ``
 
