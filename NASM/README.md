@@ -19,7 +19,7 @@ $ sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
 with __start plus c
 
 ``
-$ nasm -f elf <file.asm>
+$ nasm -f elf <file.asm
 ``
 
 with main
@@ -33,6 +33,7 @@ only 32bits assembly
 
 ``
 $ nasm -f elf -F dwarf -g file.asm
+
 $ ld -m elf_i386 -o file file.o
 ``
 
