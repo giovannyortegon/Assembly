@@ -26,7 +26,6 @@ with main
 
 ``
 $ gcc -m32 -g -o file file.o
-
 $ ld -m elf_i386 -s -o <name execute> <object file .o>
 ``
 
